@@ -2,6 +2,7 @@ package io.micronaut.starter.analytics.postgres
 
 import io.micronaut.context.annotation.Property
 import io.micronaut.context.annotation.Requires
+import io.micronaut.context.env.Environment
 import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Consumes
@@ -29,7 +30,7 @@ import static io.micronaut.starter.analytics.postgres.ExcelGenerator.ExcelColumn
 @Property(name = "spec.name", value = "GenerateExcelSpec")
 @Property(name = "api-keys.test.name", value = "Mr. Tester")
 @Property(name = "api-keys.test.key", value = "wonderful")
-@MicronautTest(transactional = false)
+@MicronautTest(transactional = false, environments = [Environment.GOOGLE_COMPUTE])
 @spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
 class GenerateExcelSpec extends Specification implements TestPropertyProvider {
 

@@ -53,6 +53,10 @@ dependencies {
 
     compileOnly("io.micronaut:micronaut-http-client")
     testImplementation("io.micronaut:micronaut-http-client")
+
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
 }
 
 application {
