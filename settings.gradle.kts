@@ -1,5 +1,3 @@
-import org.gradle.internal.impldep.org.eclipse.jgit.lib.ObjectChecker.tag
-
 plugins {
     id("com.gradle.enterprise") version("3.15")
     id("com.gradle.common-custom-user-data-gradle-plugin") version "1.11.3"
