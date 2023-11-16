@@ -80,5 +80,5 @@ micronaut {
     }
 }
 tasks.named<DockerBuildImage>("dockerBuild") {
-    images.add(System.getenv("IMAGE_NAME"))
+    images = setOf(System.getenv("IMAGE_NAME"))
 }
