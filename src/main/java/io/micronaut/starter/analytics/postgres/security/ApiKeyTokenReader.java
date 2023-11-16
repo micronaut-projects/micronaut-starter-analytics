@@ -50,7 +50,7 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
         }
         HttpHeaders headers = request.getHeaders();
         Optional<String> authorizationHeader = headers.findFirst(getHeaderName());
-        if (!authorizationHeader.isPresent()) {
+        if (authorizationHeader.isEmpty()) {
             authorizationHeader = headers.findFirst(getHeaderName().toLowerCase());
         }
         return authorizationHeader.flatMap(this::extractTokenFromAuthorization);
