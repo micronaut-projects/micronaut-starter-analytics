@@ -80,5 +80,5 @@ micronaut {
     }
 }
 tasks.named<DockerBuildImage>("dockerBuild") {
-    images.add(if (project.hasProperty("dockerImageName")) project.properties["dockerImageName"].toString() else "starter-analytics")
+    images.add(System.getenv("IMAGE_NAME"))
 }
