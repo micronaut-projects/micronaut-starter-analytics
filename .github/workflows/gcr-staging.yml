@@ -30,7 +30,7 @@ jobs:
       run: gcloud auth configure-docker --quiet
     - name: Build Docker image and Push it GCR
       run:
-        ./gradlew dockerPush -PdockerImageName=${{ env.IMAGE_NAME }}
+        ./gradlew dockerPush -PdockerImageName=${{ env.IMAGE_NAME }} --stacktrace
     - name: Deploy Docker image
       run: |
         gcloud components install beta --quiet
