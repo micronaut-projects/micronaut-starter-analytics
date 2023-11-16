@@ -28,8 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Property(name = "api-keys.starter.name", value = "starter")
-@Property(name = "api-keys.starter.key", value = API_KEY)
+@Property(name = "api.key", value = API_KEY)
 @MicronautTest(environments = {Environment.GOOGLE_COMPUTE})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnalyticsControllerTest implements TestPropertyProvider {

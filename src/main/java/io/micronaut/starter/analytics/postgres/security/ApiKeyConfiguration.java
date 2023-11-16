@@ -15,28 +15,10 @@
  */
 package io.micronaut.starter.analytics.postgres.security;
 
-import io.micronaut.context.annotation.EachProperty;
-import jakarta.annotation.Nonnull;
+import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Requires;
 
-/**
- * Represents an API key to access secure endpoints.
- */
-@EachProperty("api-keys")
-public interface ApiKeyConfiguration {
-
-    /**
-     * Principal name.
-     *
-     * @return principal name.
-     */
-    @Nonnull
-    String getName();
-
-    /**
-     * API key.
-     *
-     * @return API key.
-     */
-    @Nonnull
-    String getKey();
+@Requires(property = "api.key")
+@ConfigurationProperties("api")
+public record ApiKeyConfiguration(String key) {
 }

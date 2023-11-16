@@ -28,8 +28,7 @@ import java.util.concurrent.CompletableFuture
 import static io.micronaut.starter.analytics.postgres.ExcelGenerator.ExcelColumn.*
 
 @Property(name = "spec.name", value = "GenerateExcelSpec")
-@Property(name = "api-keys.test.name", value = "Mr. Tester")
-@Property(name = "api-keys.test.key", value = "wonderful")
+@Property(name = "api.key", value = "wonderful")
 @MicronautTest(transactional = false, environments = [Environment.GOOGLE_COMPUTE])
 @spock.lang.Requires({ DockerClientFactory.instance().isDockerAvailable() })
 class GenerateExcelSpec extends Specification implements TestPropertyProvider {

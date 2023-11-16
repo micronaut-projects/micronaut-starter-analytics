@@ -15,6 +15,7 @@
  */
 package io.micronaut.starter.analytics.postgres.security;
 
+import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.async.publisher.Publishers;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.authentication.Authentication;
@@ -25,6 +26,7 @@ import org.reactivestreams.Publisher;
 /**
  * Validates token {@code X-API-KEY} and retrieves claims.
  */
+@Requires(beans = ApiKeyRepository.class)
 @Singleton
 class ApiKeyTokenValidator implements TokenValidator<HttpRequest<?>> {
 
