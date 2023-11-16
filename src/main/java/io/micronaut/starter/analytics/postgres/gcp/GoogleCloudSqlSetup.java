@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2022 original authors
+ * Copyright 2017-2023 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 package io.micronaut.starter.analytics.postgres.gcp;
 
 import io.micronaut.configuration.jdbc.hikari.DatasourceConfiguration;
-import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.context.env.Environment;
 import io.micronaut.context.event.BeanCreatedEvent;
@@ -32,24 +31,18 @@ import jakarta.inject.Singleton;
  */
 @Singleton
 @Requires(env = Environment.GOOGLE_COMPUTE)
-@Requires(property = GoogleCloudSqlSetup.CLOUD_SQL_CONNECTION_NAME)
+@Requires(bean = CloudSQLConnection.class)
 public class GoogleCloudSqlSetup implements BeanCreatedEventListener<DatasourceConfiguration> {
-    public static final String CLOUD_SQL_CONNECTION_NAME = "cloud.sql.connection.name";
-    private static final String DB_NAME = System.getenv("DB_NAME");
-    private final String cloudSqlInstance;
+    private final DatasourceConfigurationPopulator datasourceConfigurationPopulator;
 
-    public GoogleCloudSqlSetup(@Property(name = CLOUD_SQL_CONNECTION_NAME) String cloudSqlInstance) {
-        this.cloudSqlInstance = cloudSqlInstance;
+    public GoogleCloudSqlSetup(DatasourceConfigurationPopulator datasourceConfigurationPopulator) {
+        this.datasourceConfigurationPopulator = datasourceConfigurationPopulator;
     }
 
     @Override
     public DatasourceConfiguration onCreated(BeanCreatedEvent<DatasourceConfiguration> event) {
         DatasourceConfiguration config = event.getBean();
-        if (DB_NAME != null) {
-            config.setJdbcUrl("jdbc:postgresql:///%s".formatted(DB_NAME));
-        }
-        config.addDataSourceProperty("socketFactory", "com.google.cloud.sql.postgres.SocketFactory");
-        config.addDataSourceProperty("cloudSqlInstance", cloudSqlInstance);
+        datasourceConfigurationPopulator.populate(config);
         return config;
     }
 }

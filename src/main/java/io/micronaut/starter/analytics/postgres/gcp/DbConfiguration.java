@@ -13,31 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.starter.analytics.postgres;
+package io.micronaut.starter.analytics.postgres.gcp;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
+import io.micronaut.context.annotation.Requires;
 
-/**
- * Allows configuration of starter analytics.
- */
-@ConfigurationProperties(StarterAnalyticsConfiguration.PREFIX)
-public class StarterAnalyticsConfiguration {
-    public static final String PREFIX = "micronaut.starter.analytics";
-
-    private int pageSize = 50;
-
-    /**
-     * @return The page size to fetch applications from database
-     */
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    /**
-     * Sets the page size to fetch applications from database
-     * @param pageSize The page size
-     */
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
+@Requires(property = "db.name")
+@ConfigurationProperties("db")
+public record DbConfiguration(String name) {
 }
