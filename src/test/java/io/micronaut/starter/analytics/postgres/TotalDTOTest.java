@@ -8,10 +8,11 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 @MicronautTest(startApplication = false)
 class TotalDTOTest {
+
     @Inject
     BeanContext beanContext;
 
@@ -31,5 +32,4 @@ class TotalDTOTest {
         SerdeIntrospections serdeIntrospections = beanContext.getBean(SerdeIntrospections.class);
         assertDoesNotThrow(() -> serdeIntrospections.getSerializableIntrospection(Argument.of(TotalDTO.class)));
     }
-
 }

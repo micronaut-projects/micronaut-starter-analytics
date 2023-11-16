@@ -6,6 +6,7 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import java.util.Map;
 
 public class PostgreSQL {
+
     private static PostgreSQLContainer postgres;
 
     public static Map<String, String> getProperties() {

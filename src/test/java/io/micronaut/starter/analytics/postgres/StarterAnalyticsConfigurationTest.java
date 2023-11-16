@@ -6,7 +6,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Property(name = "flyway.datasources.default.enabled", value = StringUtils.FALSE)
 @MicronautTest(startApplication = false)
@@ -19,5 +19,4 @@ class StarterAnalyticsConfigurationTest {
     void pageSizeDefaultsToFifty() {
         assertEquals(50, analyticsConfiguration.getPageSize());
     }
-
 }

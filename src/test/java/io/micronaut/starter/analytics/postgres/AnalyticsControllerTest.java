@@ -10,12 +10,6 @@ import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
-import io.micronaut.starter.analytics.Generated;
-import io.micronaut.starter.application.ApplicationType;
-import io.micronaut.starter.options.BuildTool;
-import io.micronaut.starter.options.JdkVersion;
-import io.micronaut.starter.options.Language;
-import io.micronaut.starter.options.TestFramework;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.micronaut.test.support.TestPropertyProvider;
 import jakarta.inject.Inject;
@@ -29,13 +23,17 @@ import java.util.Map;
 import java.util.Optional;
 
 import static io.micronaut.starter.analytics.postgres.AnalyticsControllerTest.API_KEY;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "api-keys.starter.name", value = "starter")
 @Property(name = "api-keys.starter.key", value = API_KEY)
 @MicronautTest(environments = {Environment.GOOGLE_COMPUTE})
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AnalyticsControllerTest implements TestPropertyProvider {
+
     public static final String API_KEY = "xxx";
 
     @Inject
@@ -106,5 +104,4 @@ class AnalyticsControllerTest implements TestPropertyProvider {
         request.header("X-API-KEY", API_KEY);
         return request;
     }
-
 }

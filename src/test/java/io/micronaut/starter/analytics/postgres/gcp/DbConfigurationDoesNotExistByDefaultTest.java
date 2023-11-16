@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @MicronautTest(startApplication = false)
 class DbConfigurationDoesNotExistByDefaultTest {
+
     @Inject
     BeanContext beanContext;
 
@@ -16,5 +17,4 @@ class DbConfigurationDoesNotExistByDefaultTest {
     void beanOfTypeDbConfigurationDoesNotExists() {
         assertFalse(beanContext.containsBean(DbConfiguration.class));
     }
-
 }

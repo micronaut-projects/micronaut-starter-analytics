@@ -22,8 +22,6 @@ import io.micronaut.data.model.Slice;
 import io.micronaut.data.model.query.builder.sql.Dialect;
 import io.micronaut.data.repository.PageableRepository;
 
-import java.util.List;
-
 /**
  * Repository for storing generated applications.
  *

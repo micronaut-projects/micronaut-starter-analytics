@@ -6,7 +6,8 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Property(name = "cloud.sql.connection.name", value = "micronaut-foo:us-central1:foo-postgresdb")
 @Property(name = "db.name", value = "foo")
@@ -17,6 +18,7 @@ class DatasourceConfigurationPopulatorTest {
 
     @Inject
     DatasourceConfigurationPopulator populator;
+
     @Test
     void popoulateDataSourceConfiguration() {
         DatasourceConfiguration config = new DatasourceConfiguration("default");
