@@ -1,0 +1,42 @@
+name: GCR STAGING
+on:
+  push:
+    branches: [ "main" ]
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: gcr.io/${{ secrets.GCP_PROJECT_ID }}/${{ secrets.GCP_APP_NAME }}-analytics:snapshot
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: build
+    - name: Login
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        service_account_email: ${{ secrets.GCP_EMAIL }}
+        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+    - name: Configure Docker
+      run: gcloud auth configure-docker --quiet
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: dockerBuild -PdockerImageName=${{ env.IMAGE_NAME }}
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: dockerPush -PdockerImageName=${{ env.IMAGE_NAME }}
+    - name: Deploy Docker image
+      run: |
+        gcloud components install beta --quiet
+        gcloud run deploy ${{ secrets.GCP_PROJECT_ID }}-analytics-snapshot --image $IMAGE_NAME --region us-central1 --platform managed --allow-unauthenticated --service-account=${{ secrets.GCLOUD_EMAIL }}
