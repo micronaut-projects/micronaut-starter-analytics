@@ -26,8 +26,6 @@ public class Main {
         System.setProperty("io.netty.machineId", MacAddressUtil.formatAddress(bestMacAddr));
     }
     public static void main(String... args) {
-        Micronaut.build(args)
-                .deduceCloudEnvironment(true)
-                .start();
+        Micronaut.build(args).start();
     }
 }

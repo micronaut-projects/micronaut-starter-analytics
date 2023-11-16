@@ -70,17 +70,54 @@ GitHub, you need to set up a secrets environment in your repository, with the fo
 
 - `GCP_PROJECT_ID` is your `$PROJECT_ID`.
 - `GCP_APP_NAME` is your app name.
-- `GCP_EMAIL` is the email from the service account you created, which should look like this: `$ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com`
 - `GCP_CREDENTIALS` is the content from the key.json file that you just created.
--
+
 For example, your settings should look something like this:
 
 `GCP_PROJECT_ID = foobar`  
-`GCP_APP_NAME = foobar`  
-`GCP_EMAIL = account-name@project-example.iam.gserviceaccount.com`
+`GCP_APP_NAME = foobar`
 
 Cat the `key.json` content and paste it into the `GCP_CREDENTIALS` secret value.
 
 Now you just need to create a YAML file telling which commands your workflow should run. In your project directory, create a folder called `.github` and create another one inside it called `workflows`.
 
 See the workflows in this project for examples.
+
+## Cloud SQL Setup
+
+![Cloud SQL Admin API Enable Screenshot](docs/enable-cloud-sql-admin-api.png)
+
+### Cloud SQL Instance
+
+Create an instance of Cloud SQL:
+
+![](docs/cloud_sql_create_intance.png)
+
+Choose PostgreSQL as your database engine:
+
+![](docs/choose-postgresql.png)
+
+![Enable Compute Engine API](docs/enable-compute-engine-api.png)
+
+Configure it with the following options:
+
+![](docs/dbinstance-options.png)
+
+### Databases
+
+Create two databases `grailsforge-production` and `grailsforge-snapshot`
+
+![Cloud SQL Databases Screenshot](docs/create-two-databases.png)
+
+## Cloud Run environment variables
+
+| Name                           | Value                                          | 
+|:-------------------------------|:-----------------------------------------------|
+| `MICRONAUT_ENV_DEDUCTION`      | `false`                                        |
+| `MICRONAUT_ENVIRONMENTS`       | `gcp`                                          |
+| `API_KEY`                      | `Allowed API Key`                              |
+| `CLOUD_SQL_CONNECTION_NAME`    | `GC_PROJECT_ID:REGION:CLOUD_SQL_INSTANCE_NAME` |
+| `DATASOURCES_DEFAULT_PASSWORD` | Database password                              | 
+| `DATASOURCES_DEFAULT_USERNAME` | Database username                              |
+| `DB_NAME`                      | Database name                                  |
+| `DATASOURCES_DEFAULT_URL`      | Database JDBC URL                              |
