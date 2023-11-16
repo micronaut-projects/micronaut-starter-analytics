@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @Singleton
 public class ExcelGenerator {
 
-    private static final String SHEET_NAME = "Applications";
+    public static final String SHEET_NAME = "Applications";
 
     private static final Function<Workbook, CellStyle> CELL_STYLE_DATE_TIME = workbook -> {
         final CellStyle style = workbook.createCellStyle();
@@ -88,7 +88,7 @@ public class ExcelGenerator {
         return workbook;
     }
 
-    private enum ExcelColumn {
+    public enum ExcelColumn {
         DATE_CREATED("date_created", CellType.NUMERIC, date(Application::getDateCreated), CELL_STYLE_DATE_TIME),
         TYPE("type", CellType.STRING, symbol(Application::getType)),
         LANGUAGE("language", CellType.STRING, symbol(Application::getLanguage)),
