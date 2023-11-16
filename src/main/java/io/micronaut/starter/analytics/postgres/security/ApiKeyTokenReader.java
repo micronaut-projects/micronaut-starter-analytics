@@ -15,14 +15,21 @@
  */
 package io.micronaut.starter.analytics.postgres.security;
 
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpRequest;
 import io.micronaut.security.token.reader.HttpHeaderTokenReader;
 import jakarta.inject.Singleton;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 /**
  * Reads token {@code X-API-KEY} from an HTTP request.
  */
 @Singleton
 public class ApiKeyTokenReader extends HttpHeaderTokenReader {
+    private static final Logger LOG = LoggerFactory.getLogger(ApiKeyTokenReader.class);
 
     private static final String X_API_TOKEN = "X-API-KEY";
 
@@ -35,4 +42,18 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
     protected String getHeaderName() {
         return X_API_TOKEN;
     }
+
+    @Override
+    public Optional<String> findToken(HttpRequest<?> request) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Looking for bearer token in {} header", getHeaderName());
+        }
+        HttpHeaders headers = request.getHeaders();
+        Optional<String> authorizationHeader = headers.findFirst(getHeaderName());
+        if (!authorizationHeader.isPresent()) {
+            authorizationHeader = headers.findFirst(getHeaderName().toLowerCase());
+        }
+        return authorizationHeader.flatMap(this::extractTokenFromAuthorization);
+    }
+
 }
