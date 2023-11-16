@@ -1,6 +1,7 @@
 package io.micronaut.starter.analytics.postgres
 
 import io.micronaut.context.annotation.Property
+import io.micronaut.context.env.Environment
 import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.starter.application.ApplicationType
 import io.micronaut.starter.options.BuildTool
@@ -20,7 +21,7 @@ import spock.lang.Specification
 import static io.micronaut.starter.analytics.postgres.ExcelGenerator.ExcelColumn.*
 
 @Property(name = "spec.name", value = "ExcelGeneratorSpec")
-@MicronautTest(transactional = false)
+@MicronautTest(transactional = false, environments = [Environment.GOOGLE_COMPUTE])
 class ExcelGeneratorSpec extends Specification implements TestPropertyProvider {
 
     @Shared @AutoCleanup PostgreSQLContainer postgres = new PostgreSQLContainer<>("postgres:10")

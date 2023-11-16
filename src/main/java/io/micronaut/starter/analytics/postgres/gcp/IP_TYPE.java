@@ -13,25 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.starter.analytics.postgres;
+package io.micronaut.starter.analytics.postgres.gcp;
 
-import io.micronaut.serde.annotation.Serdeable;
-
-@Serdeable
-public class TotalDTO {
-    private final String name;
-    private final long total;
-
-    public TotalDTO(String name, long total) {
-        this.name = name;
-        this.total = total;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getTotal() {
-        return total;
-    }
+/**
+ * IP type for connecting to a Cloud SQL instance.
+ */
+public enum IP_TYPE {
+    PUBLIC,
+    PRIVATE
 }

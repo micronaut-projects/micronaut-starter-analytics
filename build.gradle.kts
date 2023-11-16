@@ -43,7 +43,8 @@ dependencies {
     // PostgresSQL
     implementation("org.postgresql:postgresql")
     testImplementation("org.testcontainers:postgresql")
-    runtimeOnly("com.google.cloud.sql:postgres-socket-factory:1.11.1")
+    // Cloud SQL https://github.com/GoogleCloudPlatform/cloud-sql-jdbc-socket-factory/blob/main/docs/jdbc.md#postgres
+    runtimeOnly("com.google.cloud.sql:postgres-socket-factory:1.15.0")
 
     // Logging
     runtimeOnly("ch.qos.logback:logback-classic")
@@ -53,6 +54,10 @@ dependencies {
 
     compileOnly("io.micronaut:micronaut-http-client")
     testImplementation("io.micronaut:micronaut-http-client")
+
+    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
+    testImplementation("io.micronaut.test:micronaut-test-junit5")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
 }
 
 application {
