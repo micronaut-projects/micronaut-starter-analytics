@@ -1,3 +1,5 @@
+import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
+
 plugins {
     id("groovy")
     id("com.github.johnrengelman.shadow") version "8.1.1"
@@ -78,5 +80,6 @@ micronaut {
     }
 }
 
-
-
+tasks.named<DockerBuildImage>("dockerBuild") {
+    images.add(if (project.hasProperty("dockerImageName")) project.properties["dockerImageName"].toString() else "starter-analytics")
+}
