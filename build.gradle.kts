@@ -79,7 +79,6 @@ micronaut {
         annotations("io.micronaut.starter.analytics.postgres.*")
     }
 }
-
 tasks.named<DockerBuildImage>("dockerBuild") {
-    images.add(System.getenv("IMAGE_NAME"))
+    images.add(if (project.hasProperty("dockerImageName")) project.properties["dockerImageName"].toString() else "starter-analytics")
 }

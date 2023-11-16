@@ -28,10 +28,9 @@ jobs:
         service_account_key: ${{ secrets.GCP_CREDENTIALS }}
     - name: Configure Docker
       run: gcloud auth configure-docker --quiet
-    - name: Build with Gradle
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-      with:
-        arguments: dockerPush -PdockerImageName=${{ env.IMAGE_NAME }}
+    - name: Build Docker image and Push it GCR
+      run:
+        ./gradlew dockerPush -PdockerImageName=${{ env.IMAGE_NAME }}
     - name: Deploy Docker image
       run: |
         gcloud components install beta --quiet
