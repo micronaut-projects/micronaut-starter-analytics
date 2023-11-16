@@ -15,6 +15,7 @@
  */
 package io.micronaut.starter.analytics.postgres.security;
 
+import io.micronaut.core.order.Ordered;
 import io.micronaut.http.HttpHeaders;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.security.token.reader.HttpHeaderTokenReader;
@@ -56,4 +57,8 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
         return authorizationHeader.flatMap(this::extractTokenFromAuthorization);
     }
 
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
+    }
 }
