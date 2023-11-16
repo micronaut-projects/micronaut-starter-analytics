@@ -72,7 +72,7 @@ GitHub, you need to set up a secrets environment in your repository, with the fo
 - `GCP_APP_NAME` is your app name.
 - `GCP_EMAIL` is the email from the service account you created, which should look like this: `$ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com`
 - `GCP_CREDENTIALS` is the content from the key.json file that you just created.
--
+  
 For example, your settings should look something like this:
 
 `GCP_PROJECT_ID = foobar`  
