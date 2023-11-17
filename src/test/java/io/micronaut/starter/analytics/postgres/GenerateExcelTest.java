@@ -37,13 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Property(name = "spec.name", value = "GenerateExcelSpec")
 @Property(name = "api.key", value = "wonderful")
 @MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class GenerateExcelTest implements TestPropertyProvider {
-
-    @Override
-    public Map<String, String> getProperties() {
-        return PostgreSQL.getProperties();
-    }
+class GenerateExcelTest {
 
     @Inject
     AnalyticsClient client;

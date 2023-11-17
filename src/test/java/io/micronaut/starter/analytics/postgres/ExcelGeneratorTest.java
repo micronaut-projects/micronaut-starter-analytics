@@ -25,18 +25,10 @@ import static io.micronaut.starter.analytics.postgres.ExcelGenerator.ExcelColumn
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Property(name = "micronaut.starter.analytics.page-size", value = "5")
 @Property(name = "spec.name", value = "ExcelGeneratorSpec")
 @MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ExcelGeneratorTest implements TestPropertyProvider {
-
-    @Override
-    public Map<String, String> getProperties() {
-        Map<String, String> result = new HashMap<>(PostgreSQL.getProperties());
-        result.put("micronaut.starter.analytics.page-size", "" + 5);
-        return result;
-    }
-
+class ExcelGeneratorTest {
     @Inject
     ExcelGenerator excelGenerator;
 

@@ -37,11 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @Property(name = "spec.name", value = "StoreGeneratedProjectStatsSpec")
 @Property(name = "api.key", value = "wonderful")
 @MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class StoreGeneratedProjectStatsTest implements TestPropertyProvider {
-    public Map<String, String> getProperties() {
-        return PostgreSQL.getProperties();
-    }
+class StoreGeneratedProjectStatsTest {
 
     @Inject UnauthorizedAnalyticsClient unauthorizedClient;
     @Inject WrongApiKeyClient wrongApiKeyClient;
