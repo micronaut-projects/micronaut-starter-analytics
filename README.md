@@ -1,5 +1,22 @@
-## Distribution to Google Cloud Run via GitHub Actions
+# Micronaut Starter Analytics 
 
+Starter analytics stores information about the applications that [Micronaut Launch](https://launch.micronaut.io) generated.
+
+Starter Analytics deploys a web application to [Google Cloud Run](https://cloud.google.com/run/). The application uses a [PostgreSQL](https://www.postgresql.org) database. It persists an application and its selected features.
+
+It exposes an endpoint that saves an application in the database. Micronaut Launch backend invokes that endpoint when a new application is generated. API Key authenticaion is used to secure the communication between both services.
+
+## Database Schema
+![](docs/databaseschema.png)
+
+## Export as Excel file
+It exposes an endpoint to download analytics as an Excel file:
+
+```
+curl "{api}/analytics/excel" -H 'Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' -H 'X-API-KEY: {apikey}' --output starter-analytics.xlsx
+```
+
+## Distribution to Google Cloud Run via GitHub Actions
 
 ### Cloud Run
 
