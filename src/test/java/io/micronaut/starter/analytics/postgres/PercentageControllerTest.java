@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Property(name = "api.key", value = API_KEY)
-@MicronautTest(environments = {Environment.GOOGLE_COMPUTE})
+@MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
 class PercentageControllerTest {
 
     private static final String API_KEY = "xxx";
@@ -33,6 +33,9 @@ class PercentageControllerTest {
     @Inject
     @Client("/")
     HttpClient httpClient;
+
+    @Inject
+    FeatureRepository featureRepository;
 
     @Inject
     ApplicationRepository applicationRepository;
@@ -73,6 +76,9 @@ class PercentageControllerTest {
         assertPercentage(client, "/analytics/percentages/buildTools", Map.of("gradle_kotlin", 0.5d, "gradle", 0.25d, "maven", 0.25d));
         assertPercentage(client, "/analytics/percentages/languages", Map.of("java", 0.5d, "groovy", 0.25d, "kotlin", 0.25d));
         assertPercentage(client, "/analytics/percentages/testFrameworks", Map.of("spock", 0.5d, "junit", 0.25d, "kotest", 0.25d));
+
+        featureRepository.deleteAll();
+        applicationRepository.deleteAll();
     }
 
     void assertPercentage(BlockingHttpClient client, String path, Map<String, Double> expected) {
