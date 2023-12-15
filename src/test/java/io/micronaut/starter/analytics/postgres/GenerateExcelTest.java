@@ -23,6 +23,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.condition.DisabledInNativeImage;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -36,20 +37,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "spec.name", value = "GenerateExcelSpec")
 @Property(name = "api.key", value = "wonderful")
-@MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-class GenerateExcelTest {
+@DisabledInNativeImage
+class GenerateExcelTest extends AbstractDataTest {
 
     @Inject
     AnalyticsClient client;
-    @Inject
-    ApplicationRepository repository;
-
-    @Inject FeatureRepository featureRepository;
 
     @Test
     void verifyGeneratedExcel() throws ExecutionException, InterruptedException, IOException {
         //given: "there is one application stored in the repository"
-        Application app = repository.save(new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.SPOCK, JdkVersion.JDK_8, "4.0.1"));
+        Application app = applicationRepository.save(new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.SPOCK, JdkVersion.JDK_8, "4.0.1"));
         featureRepository.saveAll(Arrays.asList(new Feature(app, "micronaut-http-validation"), new Feature(app, "http-client")));
 
         //when: "the spreadsheet is generated"
@@ -87,9 +84,6 @@ class GenerateExcelTest {
         assertEquals(row.getCell(JDK_VERSION.ordinal()).getNumericCellValue(), 8);
         assertEquals(row.getCell(MICRONAUT_VERSION.ordinal()).getStringCellValue(), "4.0.1");
         assertEquals(row.getCell(DATE_CREATED.ordinal()).getNumericCellValue(), DateUtil.getExcelDate(app.getDateCreated(), false));
-
-        featureRepository.deleteAll();
-        repository.deleteAll();
     }
 
     @Requires(property = "spec.name", value = "GenerateExcelSpec")

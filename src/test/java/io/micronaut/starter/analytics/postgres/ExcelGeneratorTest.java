@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.condition.DisabledInNativeImage;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,16 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "micronaut.starter.analytics.page-size", value = "5")
 @Property(name = "spec.name", value = "ExcelGeneratorSpec")
-@MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-class ExcelGeneratorTest {
+@DisabledInNativeImage
+class ExcelGeneratorTest extends AbstractDataTest {
     @Inject
     ExcelGenerator excelGenerator;
-
-    @Inject
-    ApplicationRepository applicationRepository;
-
-    @Inject
-    FeatureRepository featureRepository;
 
     @Test
     void generateSpreadsheetWithOneApplication() {
@@ -78,8 +73,6 @@ class ExcelGeneratorTest {
         assertEquals(8, row.getCell(JDK_VERSION.ordinal()).getNumericCellValue());
         assertEquals(row.getCell(MICRONAUT_VERSION.ordinal()).getStringCellValue(), "4.0.0");
         assertEquals(row.getCell(DATE_CREATED.ordinal()).getNumericCellValue(), DateUtil.getExcelDate(app.getDateCreated(), false));
-        featureRepository.deleteAll();
-        applicationRepository.deleteAll();
     }
 
     @Test
@@ -194,9 +187,6 @@ class ExcelGeneratorTest {
         row = sheet.getRow(12);
         assertEquals(row.getCell(ID.ordinal()).getNumericCellValue(), apps.get(11).getId().doubleValue());
         assertEquals(row.getCell(FEATURES.ordinal()).getStringCellValue(), "twelve");
-
-        featureRepository.deleteAll();
-        applicationRepository.deleteAll();
     }
 
     @Test
@@ -220,6 +210,5 @@ class ExcelGeneratorTest {
         assertEquals(row.getCell(JDK_VERSION.ordinal()).getStringCellValue(), JDK_VERSION.title);
         assertEquals(row.getCell(MICRONAUT_VERSION.ordinal()).getStringCellValue(), MICRONAUT_VERSION.title);
         assertEquals(row.getCell(DATE_CREATED.ordinal()).getStringCellValue(), DATE_CREATED.title);
-
     }
 }

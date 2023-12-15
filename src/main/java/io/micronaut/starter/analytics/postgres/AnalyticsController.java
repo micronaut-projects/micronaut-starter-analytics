@@ -102,7 +102,7 @@ public class AnalyticsController {
         Application saved = applicationRepository.save(application);
         List<Feature> features = generated.getSelectedFeatures().stream()
                 .map(f -> new Feature(saved, f.getName()))
-                .collect(Collectors.toList());
+                .toList();
 
         featureRepository.saveAll(features);
         return HttpStatus.ACCEPTED;

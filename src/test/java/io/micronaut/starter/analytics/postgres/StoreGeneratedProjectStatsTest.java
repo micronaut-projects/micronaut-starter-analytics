@@ -36,14 +36,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Property(name = "spec.name", value = "StoreGeneratedProjectStatsSpec")
 @Property(name = "api.key", value = "wonderful")
-@MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-class StoreGeneratedProjectStatsTest {
+class StoreGeneratedProjectStatsTest extends AbstractDataTest {
 
     @Inject UnauthorizedAnalyticsClient unauthorizedClient;
     @Inject WrongApiKeyClient wrongApiKeyClient;
     @Inject AnalyticsClient client;
-    @Inject ApplicationRepository repository;
-    @Inject FeatureRepository featureRepository;
 
     @Test
     void testSaveGenerationDataWithoutApiKey() throws ExecutionException, InterruptedException {
@@ -94,7 +91,7 @@ class StoreGeneratedProjectStatsTest {
         HttpStatus status = client.applicationGenerated(generated).get();
         assertEquals(HttpStatus.ACCEPTED, status);
 
-        Application application = repository.list(Pageable.UNPAGED).getContent().get(0);
+        Application application = applicationRepository.list(Pageable.UNPAGED).getContent().get(0);
 
         assertEquals(generated.getType(), application.getType());
         assertEquals(application.getLanguage(), generated.getLanguage());
@@ -118,9 +115,6 @@ class StoreGeneratedProjectStatsTest {
         assertTrue(CollectionUtils.isNotEmpty(featureRepository.topBuildTools()));
         assertTrue(CollectionUtils.isNotEmpty(featureRepository.topJdkVersion()));
         assertTrue(CollectionUtils.isNotEmpty(featureRepository.topTestFrameworks()));
-
-        featureRepository.deleteAll();
-        repository.deleteAll();
     }
 
     @Requires(property = "spec.name", value = "StoreGeneratedProjectStatsSpec")
