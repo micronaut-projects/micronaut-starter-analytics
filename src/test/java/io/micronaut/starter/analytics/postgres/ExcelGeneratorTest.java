@@ -78,6 +78,7 @@ class ExcelGeneratorTest {
         assertEquals(8, row.getCell(JDK_VERSION.ordinal()).getNumericCellValue());
         assertEquals(row.getCell(MICRONAUT_VERSION.ordinal()).getStringCellValue(), "4.0.0");
         assertEquals(row.getCell(DATE_CREATED.ordinal()).getNumericCellValue(), DateUtil.getExcelDate(app.getDateCreated(), false));
+
         featureRepository.deleteAll();
         applicationRepository.deleteAll();
     }
