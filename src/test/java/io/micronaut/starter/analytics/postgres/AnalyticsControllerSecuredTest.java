@@ -20,17 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @MicronautTest(environments = {Environment.GOOGLE_COMPUTE})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AnalyticsControllerSecuredTest implements TestPropertyProvider {
+class AnalyticsControllerSecuredTest {
 
     @Inject
     @Client("/")
     HttpClient httpClient;
-
-    @Override
-    public Map<String, String> getProperties() {
-        return PostgreSQL.getProperties();
-    }
 
     @ParameterizedTest
     @ValueSource(strings = {"/analytics/top/features", "/analytics/top/jdks", "/analytics/top/buildTools", "/analytics/top/languages", "/analytics/top/testFrameworks"})

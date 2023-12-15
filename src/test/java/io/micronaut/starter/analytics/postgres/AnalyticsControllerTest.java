@@ -30,8 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "api.key", value = API_KEY)
 @MicronautTest(environments = {Environment.GOOGLE_COMPUTE})
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class AnalyticsControllerTest implements TestPropertyProvider {
+class AnalyticsControllerTest {
 
     public static final String API_KEY = "xxx";
 
@@ -41,11 +40,6 @@ class AnalyticsControllerTest implements TestPropertyProvider {
 
     @Inject
     ApplicationRepository applicationRepository;
-
-    @Override
-    public Map<String, String> getProperties() {
-        return PostgreSQL.getProperties();
-    }
 
     @ParameterizedTest
     @ValueSource(strings = {

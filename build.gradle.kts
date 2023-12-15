@@ -1,9 +1,9 @@
 import com.bmuschko.gradle.docker.tasks.image.DockerBuildImage
 
 plugins {
-    id("groovy")
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.0.4"
+    id("io.micronaut.application") version "4.2.0"
+    id("io.micronaut.test-resources") version "4.2.0"
 }
 
 version = "0.1"
@@ -57,8 +57,6 @@ dependencies {
     compileOnly("io.micronaut:micronaut-http-client")
     testImplementation("io.micronaut:micronaut-http-client")
 
-    testAnnotationProcessor("io.micronaut:micronaut-inject-java")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
 }
 
@@ -73,7 +71,7 @@ java {
 graalvmNative.toolchainDetection.set(false)
 micronaut {
     runtime("netty")
-    testRuntime("spock2")
+    testRuntime("junit5")
     processing {
         incremental(true)
         annotations("io.micronaut.starter.analytics.postgres.*")
