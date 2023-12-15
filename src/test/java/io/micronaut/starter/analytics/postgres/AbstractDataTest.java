@@ -16,7 +16,6 @@ abstract class AbstractDataTest {
 
     @AfterEach
     void cleanup() {
-        System.out.println("Cleaning up");
         featureRepository.deleteAll();
         applicationRepository.deleteAll();
     }
