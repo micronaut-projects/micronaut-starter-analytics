@@ -1,33 +1,31 @@
 package io.micronaut.starter.analytics.postgres;
 
-import io.micronaut.context.annotation.Property;
-import io.micronaut.context.env.Environment;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.json.JsonMapper;
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import io.micronaut.starter.application.ApplicationType;
+import io.micronaut.starter.options.BuildTool;
+import io.micronaut.starter.options.JdkVersion;
+import io.micronaut.starter.options.Language;
+import io.micronaut.starter.options.TestFramework;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import static io.micronaut.starter.analytics.postgres.AnalyticsControllerTest.API_KEY;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Property(name = "api.key", value = API_KEY)
 class PercentageControllerTest extends AbstractDataTest {
-
-    private static final String API_KEY = "xxx";
 
     @Inject
     @Client("/")
@@ -53,16 +51,14 @@ class PercentageControllerTest extends AbstractDataTest {
 
     @Test
     void checkAccuracy() {
+        applicationRepository.saveAll(List.of(
+                new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.JUNIT, JdkVersion.JDK_17, "4.0.1"),
+                new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_21, "4.0.1"),
+                new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_17, "4.0.1"),
+                new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1")
+        ));
+
         BlockingHttpClient client = httpClient.toBlocking();
-        String setupJson = """
-                {"type":"DEFAULT","language":"java","testFramework":"junit","buildTool":"gradle","jdkVersion":"JDK_17"}
-                {"type":"DEFAULT","language":"java","testFramework":"spock","buildTool":"gradle_kotlin","jdkVersion":"JDK_21"}
-                {"type":"FUNCTION","language":"groovy","testFramework":"spock","buildTool":"gradle_kotlin","jdkVersion":"JDK_17"}
-                {"type":"FUNCTION","language":"kotlin","testFramework":"kotest","buildTool":"maven","jdkVersion":"JDK_17"}
-                """;
-        setupJson.lines().forEach(line -> {
-            assertDoesNotThrow(() -> client.exchange(decorateRequest(HttpRequest.POST("/analytics/report", line))));
-        });
 
         assertPercentage(client, "/analytics/percentages/types", Map.of("FUNCTION", 0.5d, "DEFAULT", 0.5d));
         assertPercentage(client, "/analytics/percentages/jdks", Map.of("JDK_21", 0.25d, "JDK_17", 0.75d));
@@ -92,9 +88,5 @@ class PercentageControllerTest extends AbstractDataTest {
         } catch (IOException e) {
             return null;
         }
-    }
-
-    private static MutableHttpRequest<?> decorateRequest(MutableHttpRequest<?> request) {
-        return request.header("X-API-KEY", API_KEY);
     }
 }
