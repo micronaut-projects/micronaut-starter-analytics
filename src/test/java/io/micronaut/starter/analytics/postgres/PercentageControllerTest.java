@@ -42,6 +42,7 @@ class PercentageControllerTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
+            "/analytics/percentages/types",
             "/analytics/percentages/jdks",
             "/analytics/percentages/buildTools",
             "/analytics/percentages/languages",
