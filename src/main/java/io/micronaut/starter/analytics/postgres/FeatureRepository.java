@@ -29,7 +29,6 @@ import java.util.List;
 @JdbcRepository(dialect = Dialect.POSTGRES)
 public abstract class FeatureRepository implements CrudRepository<Feature, Long> {
 
-    private static final String FIELD_APPLICATION_TYPE = "type";
     private static final String FIELD_BUILD_TOOL = "build_tool";
     private static final String FIELD_JDK_VERSION = "jdk_version";
     private static final String FIELD_LANGUAGE = "language";
@@ -48,10 +47,10 @@ public abstract class FeatureRepository implements CrudRepository<Feature, Long>
         return this.jdbcOperations
                 .prepareStatement(query("name", "feature"),
                         statement -> {
-            try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSetToTotals(resultSet);
-            }
-        });
+                            try (ResultSet resultSet = statement.executeQuery()) {
+                                return resultSetToTotals(resultSet);
+                            }
+                        });
     }
 
     @ReadOnly
@@ -103,8 +102,8 @@ public abstract class FeatureRepository implements CrudRepository<Feature, Long>
         while (resultSet.next()) {
             results.add(
                     new TotalDTO(
-                        resultSet.getString("name"),
-                        resultSet.getLong("total")
+                            resultSet.getString("name"),
+                            resultSet.getLong("total")
                     )
             );
         }
@@ -113,61 +112,5 @@ public abstract class FeatureRepository implements CrudRepository<Feature, Long>
 
     private String query(String name, String table) {
         return "SELECT " + name + " AS name, count(*) AS total FROM " + table + " GROUP BY name ORDER BY total";
-    }
-
-    @ReadOnly
-    List<PercentageDTO> applicationTypePercentages() {
-        return getPercentages(FIELD_APPLICATION_TYPE);
-    }
-
-    @ReadOnly
-    List<PercentageDTO> buildToolPercentages() {
-        return getPercentages(FIELD_BUILD_TOOL);
-    }
-
-    @ReadOnly
-    List<PercentageDTO> jdkPercentages() {
-        return getPercentages(FIELD_JDK_VERSION);
-    }
-
-    @ReadOnly
-    List<PercentageDTO> languagePercentages() {
-        return getPercentages(FIELD_LANGUAGE);
-    }
-
-    @ReadOnly
-    List<PercentageDTO> testFrameworkPercentages() {
-        return getPercentages(FIELD_TEST_FRAMEWORK);
-    }
-
-    private List<PercentageDTO> getPercentages(String name) {
-        return this.jdbcOperations
-                .prepareStatement(percentageQuery(name), statement -> {
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        List<PercentageDTO> results = new ArrayList<>(40);
-                        while (resultSet.next()) {
-                            results.add(
-                                    new PercentageDTO(
-                                            resultSet.getString("name"),
-                                            resultSet.getDouble("percentage")
-                                    )
-                            );
-                        }
-                        return results;
-                    }
-                });
-    }
-
-    private String percentageQuery(String name) {
-        return """
-                WITH totals AS (
-                    SELECT %s AS name, count(%s) AS total FROM application GROUP BY name
-                ),
-                summed_totals AS (
-                    SELECT SUM(total) AS total FROM totals
-                )
-                SELECT totals.name, ROUND(totals.total / summed_totals.total, 4) AS percentage
-                FROM totals, summed_totals
-                """.formatted(name, name);
     }
 }
