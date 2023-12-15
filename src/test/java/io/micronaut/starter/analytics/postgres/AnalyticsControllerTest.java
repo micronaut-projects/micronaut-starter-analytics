@@ -29,20 +29,13 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "api.key", value = API_KEY)
-@MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-class AnalyticsControllerTest {
+class AnalyticsControllerTest extends AbstractDataTest {
 
     public static final String API_KEY = "xxx";
 
     @Inject
     @Client("/")
     HttpClient httpClient;
-
-    @Inject
-    ApplicationRepository applicationRepository;
-
-    @Inject
-    FeatureRepository featureRepository;
 
     @ParameterizedTest
     @ValueSource(strings = {
@@ -84,9 +77,6 @@ class AnalyticsControllerTest {
         assertFalse(totalDTOList.isEmpty());
         assertEquals("junit", totalDTOList.get(0).getName());
         assertEquals(1, totalDTOList.get(0).getTotal());
-
-        applicationRepository.deleteAll();
-        featureRepository.deleteAll();
     }
 
     private static List<TotalDTO> totalDtoRequest(BlockingHttpClient client, String path) {
