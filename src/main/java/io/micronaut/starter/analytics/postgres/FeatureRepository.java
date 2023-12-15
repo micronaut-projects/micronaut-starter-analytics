@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JdbcRepository(dialect = Dialect.POSTGRES)
-abstract class FeatureRepository implements CrudRepository<Feature, Long> {
+public abstract class FeatureRepository implements CrudRepository<Feature, Long> {
 
     private static final String FIELD_APPLICATION_TYPE = "type";
     private static final String FIELD_BUILD_TOOL = "build_tool";
