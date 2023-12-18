@@ -21,6 +21,7 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.views.View;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,18 @@ class PercentageController {
 
     PercentageController(FeatureRepository featureRepository) {
         this.featureRepository = featureRepository;
+    }
+
+    @Get
+    @View("percentages")
+    PercentageViewModel index() {
+        return new PercentageViewModel(List.of(
+                new PercentageViewModel.PercentageMetrics("buildTool", "Build tools", buildTool()),
+                new PercentageViewModel.PercentageMetrics("gradleDsl", "Gradle DSLs", gradleDsl()),
+                new PercentageViewModel.PercentageMetrics("jdk", "Java versions", jdks()),
+                new PercentageViewModel.PercentageMetrics("language", "Implementation languages", languages()),
+                new PercentageViewModel.PercentageMetrics("testFramework", "Test frameworks", testFrameworks())
+        ));
     }
 
     @Get("/buildTool")

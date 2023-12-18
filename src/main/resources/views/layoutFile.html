@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <title>Launch Statistics - Micronaut Framework</title>
@@ -31,6 +32,33 @@
             }
         }
     </style>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+        const chartOptions = {
+            backgroundColor: 'transparent',
+            height: 500,
+            width: 500,
+            legend: {
+                alignment: 'center',
+                position: 'top',
+                textStyle: {
+                    bold: true,
+                    fontName: "Fira Sans",
+                    fontSize: 16,
+                }
+            },
+            color: 'white',
+            slices: {
+                0: {color: '#ce2779'},
+                1: {color: '#0a62d1'},
+                2: {color: '#699b06'},
+            }
+        };
+
+        // Load the Visualization API and the corechart package.
+        google.charts.load('current', {'packages': ['corechart']});
+    </script>
 </head>
 <body>
 <header id="header">
@@ -41,37 +69,9 @@
         </a>
     </div>
 </header>
-<main id="main">
-    <div class="container">
-        <div class="chart-container">
-            <div class="chart">
-                <h2>Build tools</h2>
-                <div id="buildTool">
-                </div>
-            </div>
-            <div class="chart">
-                <h2>Gradle DSL</h2>
-                <div id="gradleDsl">
-                </div>
-            </div>
-            <div class="chart">
-                <h2>Java version</h2>
-                <div id="jdk">
-                </div>
-            </div>
-            <div class="chart">
-                <h2>Language</h2>
-                <div id="language">
-                </div>
-            </div>
-            <div class="chart">
-                <h2>Test framework</h2>
-                <div id="testFramework">
-                </div>
-            </div>
-        </div>
-    </div>
-</main>
+<div th:replace="${content}">
+    <p>Layout content</p>
+</div>
 <footer id="footer">
     <div class="container">
 
@@ -149,76 +149,5 @@
     </div>
 </footer>
 </body>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script type="text/javascript">
+</html>
 
-    const chartOptions = {
-        backgroundColor: 'transparent',
-        height: 500,
-        width: 500,
-        legend: {
-            alignment: 'center',
-            position: 'top',
-            textStyle: {
-                bold: true,
-                fontName: "Fira Sans",
-                fontSize: 16,
-            }
-        },
-        color: 'white',
-        slices: {
-            0: {color: '#ce2779'},
-            1: {color: '#0a62d1'},
-            2: {color: '#699b06'},
-        }
-    };
-
-    const nameLookup = {
-        'junit': 'JUnit5',
-        'kotest': 'Kotest5',
-        'jdk_17': '17',
-        'jdk_21': '21',
-        'groovy': 'Apache Groovy',
-    }
-
-    const titleCase = (str) => {
-        const lower = str.toLowerCase();
-        const lookup = nameLookup[lower];
-        if (lookup) {
-            return lookup;
-        }
-        return lower.replace(/^[a-z]/gi, (cahr) => cahr.toUpperCase());
-    }
-
-    const mapJsonToChart = (json) => {
-        const data = new google.visualization.DataTable();
-        data.addColumn('string', 'key');
-        data.addColumn('number', 'value');
-        Object.keys(json.percentages).forEach((key) => {
-            data.addRow([titleCase(key), json.percentages[key] * 100]);
-        });
-        return data;
-    };
-
-    const loadChart = async (id) => {
-        await fetch(`http://localhost:8080/analytics/percentages/${id}`)
-            .then(response => response.json())
-            .then(json => mapJsonToChart(json))
-            .then((data) => {
-                const chart = new google.visualization.PieChart(document.getElementById(id));
-                chart.draw(data, chartOptions);
-            });
-    };
-
-    const onLoadCallback = async () => {
-        await Promise.all(['buildTool', 'gradleDsl', 'jdk', 'language', 'testFramework'].map((id) => {
-            loadChart(id);
-        }));
-    };
-
-    // Load the Visualization API and the corechart package.
-    google.charts.load('current', {'packages': ['corechart']});
-
-    // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(onLoadCallback);
-</script>
