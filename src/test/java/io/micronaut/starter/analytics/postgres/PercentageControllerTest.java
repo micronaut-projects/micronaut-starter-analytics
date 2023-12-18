@@ -19,6 +19,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +38,11 @@ class PercentageControllerTest extends AbstractDataTest {
 
     @ParameterizedTest
     @ValueSource(strings = {
-            "/analytics/percentages/types",
-            "/analytics/percentages/jdks",
-            "/analytics/percentages/buildTools",
-            "/analytics/percentages/languages",
-            "/analytics/percentages/testFrameworks"
+            "/analytics/percentages/jdk",
+            "/analytics/percentages/buildTool",
+            "/analytics/percentages/gradleDsl",
+            "/analytics/percentages/language",
+            "/analytics/percentages/testFramework"
     })
     void apiDoesNotRequireAuthentication(String path) {
         BlockingHttpClient client = httpClient.toBlocking();
@@ -60,20 +62,23 @@ class PercentageControllerTest extends AbstractDataTest {
 
         BlockingHttpClient client = httpClient.toBlocking();
 
-        assertPercentage(client, "/analytics/percentages/types", Map.of("FUNCTION", 0.5d, "DEFAULT", 0.5d));
-        assertPercentage(client, "/analytics/percentages/jdks", Map.of("JDK_21", 0.25d, "JDK_17", 0.75d));
-        assertPercentage(client, "/analytics/percentages/buildTools", Map.of("gradle_kotlin", 0.5d, "gradle", 0.25d, "maven", 0.25d));
-        assertPercentage(client, "/analytics/percentages/languages", Map.of("java", 0.5d, "groovy", 0.25d, "kotlin", 0.25d));
-        assertPercentage(client, "/analytics/percentages/testFrameworks", Map.of("spock", 0.5d, "junit", 0.25d, "kotest", 0.25d));
+        assertPercentage(client, "/analytics/percentages/jdk", Map.entry("JDK_21", 0.25d), Map.entry("JDK_17", 0.75d));
+        assertPercentage(client, "/analytics/percentages/gradleDsl", Map.entry("kotlin", 0.66d), Map.entry("groovy", 0.33d));
+        assertPercentage(client, "/analytics/percentages/buildTool", Map.entry("gradle", 0.75d), Map.entry("maven", 0.25d));
+        assertPercentage(client, "/analytics/percentages/language", Map.entry("java", 0.5d), Map.entry("groovy", 0.25d), Map.entry("kotlin", 0.25d));
+        assertPercentage(client, "/analytics/percentages/testFramework", Map.entry("spock", 0.5d), Map.entry("junit", 0.25d), Map.entry("kotest", 0.25d));
     }
 
-    void assertPercentage(BlockingHttpClient client, String path, Map<String, Double> expected) {
+    @SafeVarargs
+    private void assertPercentage(BlockingHttpClient client, String path, Map.Entry<String, Double> first, Map.Entry<String, Double>... rest) {
+        List<Map.Entry<String, Double>> expected = new ArrayList<>(Arrays.asList(rest));
+        expected.add(0, first);
         HttpResponse<String> response = assertDoesNotThrow(() -> client.exchange(HttpRequest.GET(path), Argument.of(String.class)));
         PercentageResponse percentages = response.getBody().map(this::parse).orElseThrow();
         assertEquals(expected.size(), percentages.percentages().size(), () -> "Expected " + expected + " from " + path + " but got " + percentages.percentages());
-        expected.forEach((name, percentage) ->
+        expected.forEach(entry ->
                 // assert equals with a 0.01 delta (as doubles are not exact)
-                assertEquals(percentage, percentages.percentageFor(name).orElseThrow(), 0.01d, () -> "Expected " + percentage + " from " + path + " for " + name + " but got " + percentages.percentages())
+                assertEquals(entry.getValue(), percentages.percentageFor(entry.getKey()).orElseThrow(), 0.01d, () -> "Expected " + entry.getValue() + " from " + path + " for " + entry.getKey() + " but got " + percentages.percentages())
         );
     }
 
