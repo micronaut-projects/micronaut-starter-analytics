@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>Launch Statistics - Micronaut Framework</title>
+    <meta name="description"
+          content="The Micronaut® framework is a modern, open source, JVM-based, full-stack toolkit for building modular, easily testable microservices and serverless applications."/>
+    <link rel='stylesheet' id='fonts-fira-sans-css'
+          href='//fonts.googleapis.com/css2?family=Fira+Sans%3Awght%40300%3B500&#038;display=swap&#038;ver=6.4.2'
+          type='text/css' media='all'/>
+    <link rel='stylesheet' id='micronaut-style-css'
+          href='https://micronaut.io/wp-content/themes/micronaut/style.min.css' type='text/css' media='all'/>
+    <style>
+        .chart-container {
+            padding: 1rem 0;
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-around;
+        }
+
+        .chart {
+            margin: auto;
+        }
+
+        @media (max-width: 400px) {
+            .chart-container {
+                display: block;
+            }
+
+            .chart {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<header id="header">
+    <div class="container">
+        <a class="navbar-brand" href="https://micronaut.io">
+            <img src="https://micronaut.io/wp-content/uploads/2020/11/MIcronautLogo_Horizontal.svg"
+                 alt="Micronaut Framework"/>
+        </a>
+    </div>
+</header>
+<main id="main">
+    <div class="container">
+        <div class="chart-container">
+            <div class="chart">
+                <h2>Build tools</h2>
+                <div id="buildTool">
+                </div>
+            </div>
+            <div class="chart">
+                <h2>Gradle DSL</h2>
+                <div id="gradleDsl">
+                </div>
+            </div>
+            <div class="chart">
+                <h2>Java version</h2>
+                <div id="jdk">
+                </div>
+            </div>
+            <div class="chart">
+                <h2>Language</h2>
+                <div id="language">
+                </div>
+            </div>
+            <div class="chart">
+                <h2>Test framework</h2>
+                <div id="testFramework">
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<footer id="footer">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-5 footer-left">
+
+                <div id="text-14" class="widget widget_text">
+                    <div class="textwidget"></div>
+                </div>
+                <div id="block-3" class="widget widget_block widget_media_image">
+                    <figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024"
+                                                                   height="316"
+                                                                   src="https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white-1024x316.png"
+                                                                   alt="" class="wp-image-4398"
+                                                                   srcset="https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white-1024x316.png 1024w, https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white-300x93.png 300w, https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white-768x237.png 768w, https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white-150x46.png 150w, https://micronaut.io/wp-content/uploads/2021/10/MIcronaut_Foundation_Horizontal_white.png 1203w"
+                                                                   sizes="(max-width: 1024px) 100vw, 1024px"/></figure>
+                </div>
+            </div>
+            <div class="col-sm-7 footer-right">
+                <ul class="meta">
+                    <li id="menu-item-2895"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2895"><a
+                            href="https://micronaut.io/brand-guidelines/">Brand Guidelines</a></li>
+                    <li id="menu-item-2894"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2894"><a
+                            href="https://micronaut.io/community-guidelines/">Community Code of Conduct</a></li>
+                    <li id="menu-item-3377"
+                        class="menu-item menu-item-type-post_type menu-item-object-page menu-item-privacy-policy menu-item-3377">
+                        <a rel="privacy-policy" href="https://micronaut.io/privacy-policy/">Privacy Policy</a></li>
+                </ul>
+                <div id="nav_menu-2" class="widget widget_nav_menu">
+                    <div class="menu-links-container">
+                        <ul id="menu-links" class="menu">
+                            <li id="menu-item-4515"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4515"><a
+                                    href="mailto:info@micronaut.io"><i class="fas fa-envelope"><span class="sr-only">Mail</span></i></a>
+                            </li>
+                            <li id="menu-item-2886"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2886"><a
+                                    target="_blank" rel="noopener" href="https://twitter.com/micronautfw"><i
+                                    class="fab fa-twitter"><span class="sr-only">Twitter</span></i></a></li>
+                            <li id="menu-item-6740"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-6740"><a
+                                    href="https://fosstodon.org/@micronaut"><i class="fab fa-mastodon"><span
+                                    class="sr-only">Mastodon</span></i></a></li>
+                            <li id="menu-item-2888"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2888"><a
+                                    target="_blank" rel="noopener" href="https://discord.com/invite/9xRFsHv98T"><i
+                                    class="fab fa-discord"><span class="sr-only">Discord</span></i></a></li>
+                            <li id="menu-item-2889"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2889"><a
+                                    target="_blank" rel="noopener" href="https://github.com/micronaut-projects/"><i
+                                    class="fab fa-github"><span class="sr-only">GitHub</span></i></a></li>
+                            <li id="menu-item-2890"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2890"><a
+                                    target="_blank" rel="noopener" href="https://www.youtube.com/@MicronautFramework"><i
+                                    class="fab fa-youtube"><span class="sr-only">YouTube</span></i></a></li>
+                            <li id="menu-item-4514"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4514"><a
+                                    href="https://www.linkedin.com/showcase/micronaut"><i class="fab fa-linkedin"><span
+                                    class="sr-only">LinkedIn</span></i></a></li>
+                            <li id="menu-item-4513"
+                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-4513"><a
+                                    href="https://www.twitch.tv/micronautfw"><i class="fab fa-twitch"><span
+                                    class="sr-only">Twitch</span></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="text-5" class="widget widget_text">
+                    <div class="textwidget"><p><small>© 2023 Micronaut Foundation. All rights reserved.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    const chartOptions = {
+        backgroundColor: 'transparent',
+        height: 500,
+        width: 500,
+        legend: {
+            alignment: 'center',
+            position: 'top',
+            textStyle: {
+                bold: true,
+                fontName: "Fira Sans",
+                fontSize: 16,
+            }
+        },
+        color: 'white',
+        slices: {
+            0: {color: '#ce2779'},
+            1: {color: '#0a62d1'},
+            2: {color: '#699b06'},
+        }
+    };
+
+    const nameLookup = {
+        'junit': 'JUnit5',
+        'kotest': 'Kotest5',
+        'jdk_17': '17',
+        'jdk_21': '21',
+        'groovy': 'Apache Groovy',
+    }
+
+    const titleCase = (str) => {
+        const lower = str.toLowerCase();
+        const lookup = nameLookup[lower];
+        if (lookup) {
+            return lookup;
+        }
+        return lower.replace(/^[a-z]/gi, (cahr) => cahr.toUpperCase());
+    }
+
+    const mapJsonToChart = (json) => {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'key');
+        data.addColumn('number', 'value');
+        Object.keys(json.percentages).forEach((key) => {
+            data.addRow([titleCase(key), json.percentages[key] * 100]);
+        });
+        return data;
+    };
+
+    const loadChart = async (id) => {
+        await fetch(`http://localhost:8080/analytics/percentages/${id}`)
+            .then(response => response.json())
+            .then(json => mapJsonToChart(json))
+            .then((data) => {
+                const chart = new google.visualization.PieChart(document.getElementById(id));
+                chart.draw(data, chartOptions);
+            });
+    };
+
+    const onLoadCallback = async () => {
+        await Promise.all(['buildTool', 'gradleDsl', 'jdk', 'language', 'testFramework'].map((id) => {
+            loadChart(id);
+        }));
+    };
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages': ['corechart']});
+
+    // Set a callback to run when the Google Visualization API is loaded.
+    google.charts.setOnLoadCallback(onLoadCallback);
+</script>
