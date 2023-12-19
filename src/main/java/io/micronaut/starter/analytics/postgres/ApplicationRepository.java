@@ -30,6 +30,7 @@ import io.micronaut.data.repository.PageableRepository;
  */
 @JdbcRepository(dialect = Dialect.POSTGRES)
 public interface ApplicationRepository extends PageableRepository<Application, Long> {
+
     /**
      * List the applications with the features.
      * @param pageable The pageable
