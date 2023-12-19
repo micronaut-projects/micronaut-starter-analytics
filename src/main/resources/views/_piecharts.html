@@ -1,0 +1,7 @@
+<th:block th:fragment="piecharts(charts)" xmlns:th="http://www.thymeleaf.org">
+    <div class="chart-container">
+        <div th:each="chart: ${charts}">
+            <div th:replace="~{_piechart :: piechart(${chart})}"></div>
+        </div>
+    </div>
+</th:block>

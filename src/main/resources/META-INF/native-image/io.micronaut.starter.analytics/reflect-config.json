@@ -1,0 +1,55 @@
+[
+  {
+    "name": "java.util.AbstractCollection",
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "size",
+        "parameterTypes": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "name": "java.util.Collection",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.util.HashSet"
+  },
+  {
+    "name": "java.util.ImmutableCollections$AbstractImmutableCollection",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.util.ImmutableCollections$AbstractImmutableList",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.util.ImmutableCollections$ListN",
+    "queryAllDeclaredMethods": true
+  },
+  {
+    "name": "java.util.LinkedHashSet"
+  },
+  {
+    "name": "java.util.List",
+    "queryAllDeclaredMethods": true,
+    "methods": [
+      {
+        "name": "get",
+        "parameterTypes": [
+          "int"
+        ]
+      },
+      {
+        "name": "subList",
+        "parameterTypes": [
+          "int",
+          "int"
+        ]
+      }
+    ]
+  }
+]

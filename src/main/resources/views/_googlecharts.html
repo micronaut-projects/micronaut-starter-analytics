@@ -1,0 +1,51 @@
+<th:block th:fragment="googlecharts()" xmlns:th="http://www.thymeleaf.org">
+<style>
+    .chart-container {
+        padding: 1rem 0;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+
+    .chart {
+        margin: auto;
+    }
+
+    @media (max-width: 400px) {
+        .chart-container {
+            display: block;
+        }
+
+        .chart {
+            width: 100%;
+        }
+    }
+</style>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+    const chartOptions = {
+        backgroundColor: 'transparent',
+        height: 500,
+        width: 500,
+        legend: {
+            alignment: 'center',
+            position: 'top',
+            textStyle: {
+                bold: true,
+                fontName: "Fira Sans",
+                fontSize: 16,
+            }
+        },
+        color: 'white',
+        slices: {
+            0: {color: '#ce2779'},
+            1: {color: '#0a62d1'},
+            2: {color: '#699b06'},
+        }
+    };
+
+    // Load the Visualization API and the corechart package.
+    google.charts.load('current', {'packages': ['corechart']});
+</script>
+</th:block>

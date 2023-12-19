@@ -8,6 +8,8 @@ import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.json.JsonMapper;
+import io.micronaut.starter.analytics.postgres.percentages.PercentageDTO;
+import io.micronaut.starter.analytics.postgres.percentages.PercentageResponse;
 import io.micronaut.starter.application.ApplicationType;
 import io.micronaut.starter.options.BuildTool;
 import io.micronaut.starter.options.JdkVersion;
@@ -24,8 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class PercentageControllerTest extends AbstractDataTest {
 
@@ -49,6 +50,17 @@ class PercentageControllerTest extends AbstractDataTest {
         HttpResponse<String> response = assertDoesNotThrow(() -> client.exchange(HttpRequest.GET(path), Argument.of(String.class)));
         assertEquals(HttpStatus.OK, response.getStatus());
         assertDoesNotThrow(() -> response.getBody().map(this::parse).orElseThrow());
+    }
+
+    @Test
+    void htmlPercentages() {
+        BlockingHttpClient client = httpClient.toBlocking();
+        String html = assertDoesNotThrow(() -> client.retrieve(HttpRequest.GET("/analytics/percentages")));
+        assertTrue(html.contains("Build tools"));
+        assertTrue(html.contains("Gradle DSLs"));
+        assertTrue(html.contains("Java versions"));
+        assertTrue(html.contains("Programming languages"));
+        assertTrue(html.contains("Test frameworks"));
     }
 
     @Test

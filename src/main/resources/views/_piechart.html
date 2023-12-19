@@ -1,0 +1,20 @@
+<th:block th:fragment="piechart(chart)" xmlns:th="http://www.thymeleaf.org">
+    <div class="chart">
+        <h2 class="text-center" th:if="${chart.title.code()}"  th:text="${#strings.defaultString(#messages.msgOrNull(chart.title.code()),chart.title.defaultMessage())}"></h2>
+        <h2 class="text-center" th:unless="${chart.title.code()}" th:text="${chart.title.defaultMessage()}"></h2>
+        <div th:id="${chart.id}"></div>
+    </div>
+    <script th:inline="javascript">
+        // Set a callback to run when the Google Visualization API is loaded.
+        google.charts.setOnLoadCallback(() => {
+            const data = new google.visualization.DataTable();
+            data.addColumn('string', 'key');
+            data.addColumn('number', 'value');
+            /*[# th:each="row : ${chart.rows}"]*/
+            data.addRow([ [[${#strings.defaultString(#messages.msgOrNull(row.name.code()),row.name.defaultMessage())}]], [[${row.value}]] ]);
+            /*[/]*/
+            const chart = new google.visualization.PieChart(document.getElementById([[${chart.id}]]));
+            chart.draw(data, chartOptions);
+        });
+    </script>
+</th:block>
