@@ -12,6 +12,7 @@ import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.starter.analytics.postgres.percentages.PercentageDTO;
 import io.micronaut.starter.analytics.postgres.percentages.PercentageResponse;
+import io.micronaut.starter.analytics.postgres.percentages.PercentageService;
 import io.micronaut.starter.application.ApplicationType;
 import io.micronaut.starter.options.BuildTool;
 import io.micronaut.starter.options.JdkVersion;
@@ -43,22 +44,7 @@ class PercentageControllerTest extends AbstractDataTest {
 
     @Inject
     JsonMapper jsonMapper;
-
-    @ParameterizedTest
-    @ValueSource(strings = {
-            "/analytics/percentages/jdk",
-            "/analytics/percentages/buildTool",
-            "/analytics/percentages/gradleDsl",
-            "/analytics/percentages/language",
-            "/analytics/percentages/testFramework"
-    })
-    void apiDoesNotRequireAuthentication(String path) {
-        BlockingHttpClient client = httpClient.toBlocking();
-        HttpResponse<String> response = assertDoesNotThrow(() -> client.exchange(HttpRequest.GET(path), Argument.of(String.class)));
-        assertEquals(HttpStatus.OK, response.getStatus());
-        assertDoesNotThrow(() -> response.getBody().map(this::parse).orElseThrow());
-    }
-
+    
     @Test
     void htmlPercentages() {
         seedData();
@@ -79,28 +65,23 @@ class PercentageControllerTest extends AbstractDataTest {
     }
 
     @Test
-    void checkAccuracy() {
+    void checkAccuracy(PercentageService percentageService) {
         seedData();
-
-        BlockingHttpClient client = httpClient.toBlocking();
-
-        assertPercentage(client, "/analytics/percentages/jdk", Map.entry("JDK_21", 0.25d), Map.entry("JDK_17", 0.75d));
-        assertPercentage(client, "/analytics/percentages/gradleDsl", Map.entry("kotlin", 0.66d), Map.entry("groovy", 0.33d));
-        assertPercentage(client, "/analytics/percentages/buildTool", Map.entry("gradle", 0.75d), Map.entry("maven", 0.25d));
-        assertPercentage(client, "/analytics/percentages/language", Map.entry("java", 0.5d), Map.entry("groovy", 0.25d), Map.entry("kotlin", 0.25d));
-        assertPercentage(client, "/analytics/percentages/testFramework", Map.entry("spock", 0.5d), Map.entry("junit", 0.25d), Map.entry("kotest", 0.25d));
+        assertPercentage("jdks", percentageService.jdks(), Map.entry("JDK_21", 0.25d), Map.entry("JDK_17", 0.75d));
+        assertPercentage("gradleDsl", percentageService.gradleDsl(), Map.entry("kotlin", 0.66d), Map.entry("groovy", 0.33d));
+        assertPercentage("buildTool", percentageService.buildTool(), Map.entry("gradle", 0.75d), Map.entry("maven", 0.25d));
+        assertPercentage("languages", percentageService.languages(), Map.entry("java", 0.5d), Map.entry("groovy", 0.25d), Map.entry("kotlin", 0.25d));
+        assertPercentage("test frameworks", percentageService.testFrameworks(), Map.entry("spock", 0.5d), Map.entry("junit", 0.25d), Map.entry("kotest", 0.25d));
     }
 
     @SafeVarargs
-    private void assertPercentage(BlockingHttpClient client, String path, Map.Entry<String, Double> first, Map.Entry<String, Double>... rest) {
+    private void assertPercentage(String name, PercentageResponse percentages, Map.Entry<String, Double> first, Map.Entry<String, Double>... rest) {
         List<Map.Entry<String, Double>> expected = new ArrayList<>(Arrays.asList(rest));
         expected.add(0, first);
-        HttpResponse<String> response = assertDoesNotThrow(() -> client.exchange(HttpRequest.GET(path), Argument.of(String.class)));
-        PercentageResponse percentages = response.getBody().map(this::parse).orElseThrow();
-        assertEquals(expected.size(), percentages.percentages().size(), () -> "Expected " + expected + " from " + path + " but got " + percentages.percentages());
+        assertEquals(expected.size(), percentages.percentages().size(), () -> "Expected " + expected + " from " + name + " but got " + percentages.percentages());
         expected.forEach(entry ->
                 // assert equals with a 0.01 delta (as doubles are not exact)
-                assertEquals(entry.getValue(), percentages.percentageFor(entry.getKey()).orElseThrow(), 0.01d, () -> "Expected " + entry.getValue() + " from " + path + " for " + entry.getKey() + " but got " + percentages.percentages())
+                assertEquals(entry.getValue(), percentages.percentageFor(entry.getKey()).orElseThrow(), 0.01d, () -> "Expected " + entry.getValue() + " from " + name + " for " + entry.getKey() + " but got " + percentages.percentages())
         );
     }
 

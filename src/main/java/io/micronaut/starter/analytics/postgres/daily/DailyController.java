@@ -38,17 +38,16 @@ import java.util.*;
  * Daily statistics rendering controller
  */
 @Controller(AnalyticsController.PATH)
-@Secured(SecurityRule.IS_AUTHENTICATED)
-@ExecuteOn(TaskExecutors.BLOCKING)
-public class DailyController {
-    public static final String MODEL_CHART = "chart";
-
+class DailyController {
+    private static final String MODEL_CHART = "chart";
     private final DailyService dailyService;
 
-    public DailyController(DailyService dailyService) {
+    DailyController(DailyService dailyService) {
         this.dailyService = dailyService;
     }
 
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @ExecuteOn(TaskExecutors.BLOCKING)
     @Produces(MediaType.TEXT_HTML)
     @Get("/daily")
     @View("daily")
@@ -58,5 +57,4 @@ public class DailyController {
             @Nullable @QueryValue Integer days) {
         return Collections.singletonMap(MODEL_CHART, dailyService.dailyBarChart(fromQuery, toQuery, days));
     }
-
 }

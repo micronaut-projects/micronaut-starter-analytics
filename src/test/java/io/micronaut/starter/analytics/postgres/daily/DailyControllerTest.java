@@ -3,13 +3,11 @@ package io.micronaut.starter.analytics.postgres.daily;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.context.annotation.Replaces;
 import io.micronaut.context.annotation.Requires;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
-import io.micronaut.http.HttpRequest;
-import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.MutableHttpRequest;
+import io.micronaut.http.*;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
@@ -37,7 +35,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Property(name = "micronaut.security.reject-not-found", value = StringUtils.FALSE)
 @Property(name = "spec.name", value = "DailyControllerTest")
+@Property(name = "micronaut.http.client.follow-redirects", value = StringUtils.FALSE)
 @Property(name = "api.key", value = DailyControllerTest.API_KEY)
 class DailyControllerTest extends AbstractDataTest {
 
@@ -56,8 +56,10 @@ class DailyControllerTest extends AbstractDataTest {
     @Test
     void dailyFailsWithNoAuth() {
         BlockingHttpClient client = httpClient.toBlocking();
-        HttpClientResponseException thrown = assertThrows(HttpClientResponseException.class, () -> client.retrieve(HttpRequest.GET("/analytics/daily").accept(MediaType.TEXT_HTML)));
-        assertEquals(HttpStatus.UNAUTHORIZED, thrown.getStatus());
+        HttpResponse response = assertDoesNotThrow(
+                () -> client.exchange(HttpRequest.GET("/analytics/daily").accept(MediaType.TEXT_HTML)));
+        assertEquals(HttpStatus.SEE_OTHER, response.getStatus());
+        assertEquals("/unauthorized", response.getHeaders().get(HttpHeaders.LOCATION));
     }
 
     @Test
