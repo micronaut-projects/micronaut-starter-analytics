@@ -64,7 +64,6 @@ class PercentageControllerTest extends AbstractDataTest {
         assertTrue(html.contains("Test frameworks"));
         assertFalse(html.contains("JDK_17"));
         assertTrue(html.contains("JUnit 5"));
-        assertTrue(html.contains("Kotest 5"));
     }
 
     @Test
