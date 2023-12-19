@@ -15,11 +15,24 @@
  */
 package io.micronaut.starter.analytics.postgres;
 
+import io.micronaut.context.ApplicationContextBuilder;
+import io.micronaut.context.ApplicationContextConfigurer;
+import io.micronaut.context.annotation.ContextConfigurer;
+import io.micronaut.context.env.Environment;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.runtime.Micronaut;
 import io.netty.util.internal.MacAddressUtil;
 import io.netty.util.internal.PlatformDependent;
 
 public class Main {
+    @ContextConfigurer
+    public static class Configurer implements ApplicationContextConfigurer {
+        @Override
+        public void configure(@NonNull ApplicationContextBuilder builder) {
+            builder.defaultEnvironments(Environment.DEVELOPMENT);
+        }
+    }
+
     static {
         byte[] bestMacAddr = new byte[8];
         PlatformDependent.threadLocalRandom().nextBytes(bestMacAddr);

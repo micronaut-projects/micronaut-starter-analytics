@@ -25,6 +25,7 @@ dependencies {
 
     // Views
     implementation("io.micronaut.views:micronaut-views-thymeleaf")
+    implementation("io.micronaut.views:micronaut-views-fieldset")
 
     // Security
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
