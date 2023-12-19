@@ -3,3 +3,4 @@
 build
 .micronaut
 *.paw
+application-dev.properties

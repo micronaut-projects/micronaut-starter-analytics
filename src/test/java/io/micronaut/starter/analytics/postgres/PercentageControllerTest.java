@@ -1,5 +1,6 @@
 package io.micronaut.starter.analytics.postgres;
 
+import io.micronaut.context.annotation.Property;
 import io.micronaut.core.type.Argument;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
@@ -7,6 +8,7 @@ import io.micronaut.http.HttpStatus;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.json.JsonMapper;
 import io.micronaut.starter.analytics.postgres.percentages.PercentageDTO;
 import io.micronaut.starter.analytics.postgres.percentages.PercentageResponse;
@@ -21,14 +23,19 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static io.micronaut.starter.analytics.postgres.AnalyticsControllerTest.API_KEY;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Property(name = "api.key", value = API_KEY)
 class PercentageControllerTest extends AbstractDataTest {
+
+    public static final String API_KEY = "xxx";
 
     @Inject
     @Client("/")
@@ -61,6 +68,12 @@ class PercentageControllerTest extends AbstractDataTest {
         assertTrue(html.contains("Java versions"));
         assertTrue(html.contains("Programming languages"));
         assertTrue(html.contains("Test frameworks"));
+        assertFalse(html.contains("Excel"));
+        URI uri = UriBuilder.of("/analytics").path("percentages").queryParam("apiKey", API_KEY).build();
+        html = assertDoesNotThrow(() -> client.retrieve(HttpRequest.GET(uri)));
+        assertTrue(html.contains("Excel"));
+        System.out.println(html);
+        assertTrue(html.contains("/analytics/excel?apiKey=xxx"));
     }
 
     @Test
