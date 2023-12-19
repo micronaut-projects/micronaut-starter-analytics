@@ -30,10 +30,10 @@ import java.util.Optional;
  */
 @Singleton
 public class ApiKeyTokenReader extends HttpHeaderTokenReader {
+
     private static final Logger LOG = LoggerFactory.getLogger(ApiKeyTokenReader.class);
 
     private static final String X_API_TOKEN = "X-API-KEY";
-    public static final String PARAMETER_API_KEY = "apiKey";
 
 
     @Override
@@ -48,14 +48,6 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
 
     @Override
     public Optional<String> findToken(HttpRequest<?> request) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Looking for bearer token in parameter {}", PARAMETER_API_KEY);
-        }
-        Optional<String> tokenOptional = Optional.ofNullable(request.getParameters().get(PARAMETER_API_KEY));
-        if (tokenOptional.isPresent()) {
-            return tokenOptional;
-        }
-
         if (LOG.isDebugEnabled()) {
             LOG.debug("Looking for bearer token in {} header", getHeaderName());
         }

@@ -61,6 +61,7 @@ class PercentageControllerTest extends AbstractDataTest {
 
     @Test
     void htmlPercentages() {
+        seedData();
         BlockingHttpClient client = httpClient.toBlocking();
         String html = assertDoesNotThrow(() -> client.retrieve(HttpRequest.GET("/analytics/percentages")));
         assertTrue(html.contains("Build tools"));
@@ -69,21 +70,17 @@ class PercentageControllerTest extends AbstractDataTest {
         assertTrue(html.contains("Programming languages"));
         assertTrue(html.contains("Test frameworks"));
         assertFalse(html.contains("Excel"));
-        URI uri = UriBuilder.of("/analytics").path("percentages").queryParam("apiKey", API_KEY).build();
-        html = assertDoesNotThrow(() -> client.retrieve(HttpRequest.GET(uri)));
+        URI uri = UriBuilder.of("/analytics").path("percentages").build();
+        html = assertDoesNotThrow(() -> client.retrieve(HttpRequest.GET(uri).header("X-API-KEY", API_KEY)));
         assertTrue(html.contains("Excel"));
-        System.out.println(html);
-        assertTrue(html.contains("/analytics/excel?apiKey=xxx"));
+        assertTrue(html.contains("/analytics/excel"));
+        assertFalse(html.contains("JDK_17"));
+        assertTrue(html.contains("JUnit 5"));
     }
 
     @Test
     void checkAccuracy() {
-        applicationRepository.saveAll(List.of(
-                new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.JUNIT, JdkVersion.JDK_17, "4.0.1"),
-                new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_21, "4.0.1"),
-                new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_17, "4.0.1"),
-                new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1")
-        ));
+        seedData();
 
         BlockingHttpClient client = httpClient.toBlocking();
 
@@ -117,6 +114,17 @@ class PercentageControllerTest extends AbstractDataTest {
             );
         } catch (IOException e) {
             return null;
+        }
+    }
+
+    private void seedData() {
+        if (applicationRepository.count() == 0) {
+            applicationRepository.saveAll(List.of(
+                    new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.JUNIT, JdkVersion.JDK_17, "4.0.1"),
+                    new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_21, "4.0.1"),
+                    new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_17, "4.0.1"),
+                    new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1")
+            ));
         }
     }
 }

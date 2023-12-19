@@ -30,6 +30,8 @@ dependencies {
     // Security
     annotationProcessor("io.micronaut.security:micronaut-security-annotations")
     implementation("io.micronaut.security:micronaut-security")
+    implementation("io.micronaut.security:micronaut-security-jwt")
+    implementation("io.micronaut.security:micronaut-security-oauth2")
 
     // Validation
     annotationProcessor("io.micronaut:micronaut-http-validation")
@@ -42,6 +44,9 @@ dependencies {
     // Micronaut Data
     annotationProcessor("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-jdbc")
+
+    // Reactor
+    implementation("io.micronaut.reactor:micronaut-reactor")
 
     // Flyway
     implementation("io.micronaut.flyway:micronaut-flyway")

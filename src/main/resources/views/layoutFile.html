@@ -348,7 +348,18 @@
 
                 <ul class="navbar-nav ml-auto">
 
-                    <li id="menu-item-2865" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2865 nav-item"><a href="https://micronaut.io/download/" class="nav-link">Download</a></li>
+                    <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children dropdown nav-item"><a class="nav-link dropdown-toggle" data-toggle="dropdown" th:text="#{analytics}"></a>
+                        <ul class="dropdown-menu">
+                            <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/analytics/percentages" class="dropdown-item" th:text="#{analytics.percentages}"></a></li>
+                            <th:block th:if="${security}">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/analytics/daily" class="dropdown-item" th:text="#{analytics.daily}"></a></li>
+                            </th:block>
+                            <th:block th:unless="${security}">
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/oauth/login/github" class="dropdown-item" th:text="#{login}"></a></li>
+                            </th:block>
+                        </ul>
+                    </li>
+
                     <li id="menu-item-2868" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-2868 dropdown nav-item"><a href="https://micronaut.io/learn/" class="nav-link dropdown-toggle" data-toggle="dropdown">Learn</a><ul class="dropdown-menu">
                         <li id="menu-item-4943" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4943"><a href="https://micronaut.io/learn/" class="dropdown-item">Overview</a></li>
                         <li id="menu-item-5111" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-5111"><a href="https://docs.micronaut.io/index.html" class="dropdown-item">User Documentaton</a></li>
