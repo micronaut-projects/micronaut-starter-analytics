@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.micronaut.starter.analytics.postgres;
+package io.micronaut.starter.analytics.postgres.percentages;
 
 public record PercentageDTO(String name, double percentage) {
 }
