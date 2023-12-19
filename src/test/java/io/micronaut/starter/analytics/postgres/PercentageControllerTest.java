@@ -59,7 +59,7 @@ class PercentageControllerTest extends AbstractDataTest {
         assertTrue(html.contains("Build tools"));
         assertTrue(html.contains("Gradle DSLs"));
         assertTrue(html.contains("Java versions"));
-        assertTrue(html.contains("Programming Languages"));
+        assertTrue(html.contains("Programming languages"));
         assertTrue(html.contains("Test frameworks"));
     }
 
