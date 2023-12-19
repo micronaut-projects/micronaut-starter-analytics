@@ -6,6 +6,7 @@ import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
@@ -17,6 +18,7 @@ import java.net.URI;
 public class HomeController {
     public static final @NonNull URI URI_ANALYTICS_PERCENTAGES = UriBuilder.of("/analytics").path("percentages").build();
 
+    @Produces(MediaType.TEXT_HTML)
     @Secured(SecurityRule.IS_ANONYMOUS)
     @Get
     HttpResponse<?> index(HttpRequest<?> request) {
