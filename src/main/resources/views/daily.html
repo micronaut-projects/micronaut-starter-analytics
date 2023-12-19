@@ -14,8 +14,8 @@
             </div>
             <div class="row">
                 <div class="chart col-md-12">
-                    <h2 th:text="${#strings.defaultString(#messages.msgOrNull(name.code()),name.defaultMessage())}"></h2>
-                    <h2 th:unless="${name.code()}" th:text="${name.defaultMessage()}"></h2>
+                    <h2 th:if="${chart.name().code() != null}"th:text="${#strings.defaultString(#messages.msgOrNull(chart.name().code()),chart.name().defaultMessage())}"></h2>
+                    <h2 th:unless="${chart.name().code()}" th:text="${chart.name().defaultMessage()}"></h2>
                     <div id="daily-chart"></div>
                 </div>
                 <script th:inline="javascript">
@@ -24,7 +24,7 @@
                         const data = new google.visualization.DataTable();
                         data.addColumn('date', 'date');
                         data.addColumn('number', [[${#strings.defaultString(#messages.msgOrNull('daily.count.label'),'count')}]]);
-                        /*[# th:each="day : ${days}"]*/
+                        /*[# th:each="day : ${chart.days()}"]*/
                         data.addRow([ new Date( [[${day.date}]] ), [[${day.count}]] ]);
                         /*[/]*/
                         const chart = new google.visualization.ColumnChart(document.getElementById('daily-chart'));

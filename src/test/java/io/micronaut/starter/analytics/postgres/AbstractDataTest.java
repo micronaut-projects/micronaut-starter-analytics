@@ -6,7 +6,7 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
 
 @MicronautTest(transactional = false, environments = {Environment.GOOGLE_COMPUTE})
-abstract class AbstractDataTest {
+public abstract class AbstractDataTest {
 
     @Inject
     ApplicationRepository applicationRepository;

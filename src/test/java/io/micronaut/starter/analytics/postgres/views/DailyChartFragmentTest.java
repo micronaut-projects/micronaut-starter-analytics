@@ -11,7 +11,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -21,12 +23,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class DailyChartFragmentTest {
 
     @Test
-    void renderPieChartFragement(ViewsRenderer<DailyBarChart, ?> viewsRenderer) throws IOException {
+    void renderPieChartFragement(ViewsRenderer<Map<String, Object >, ?> viewsRenderer) throws IOException {
         DailyBarChart model = new DailyBarChart(
                 Message.of("Daily", "daily.title"),
                 List.of(new Day(LocalDate.now(), 1), new Day(LocalDate.now().minusDays(1), 2))
         );
-        Writable writable = viewsRenderer.render("daily.html", model, null);
+        Writable writable = viewsRenderer.render("daily.html", Collections.singletonMap("chart", model), null);
         assertNotNull(writable);
         String html = WritableUtils.writeableToString(writable);
         assertNotNull(html);
