@@ -30,6 +30,7 @@ import java.util.Optional;
  */
 @Singleton
 public class ApiKeyTokenReader extends HttpHeaderTokenReader {
+
     private static final Logger LOG = LoggerFactory.getLogger(ApiKeyTokenReader.class);
 
     private static final String X_API_TOKEN = "X-API-KEY";
@@ -53,6 +54,10 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
         Optional<String> authorizationHeader = headers.findFirst(getHeaderName());
         if (authorizationHeader.isEmpty()) {
             authorizationHeader = headers.findFirst(getHeaderName().toLowerCase());
+        }
+        if (authorizationHeader.isEmpty()) {
+            // Try and grab it from the URL
+            authorizationHeader = request.getParameters().getFirst("api");
         }
         return authorizationHeader.flatMap(this::extractTokenFromAuthorization);
     }
