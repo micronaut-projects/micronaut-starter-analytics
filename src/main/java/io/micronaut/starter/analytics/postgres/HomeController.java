@@ -27,7 +27,8 @@ public class HomeController {
                 : HttpResponse.notFound();
     }
 
-    private static boolean accepts(HttpRequest<?> request, MediaType mediaType) {
+    private static boolean accepts(@NonNull HttpRequest<?> request,
+                                   @NonNull MediaType mediaType) {
         return request.getHeaders()
                 .accept()
                 .stream()
