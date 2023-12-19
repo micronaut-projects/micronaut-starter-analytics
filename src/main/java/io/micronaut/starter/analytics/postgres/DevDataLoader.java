@@ -41,7 +41,7 @@ public class DevDataLoader implements ApplicationEventListener<ApplicationStartu
      * The version of Micronaut to use for the dummy data.
      * Added TESTING suffix, so we can find and remove them if they ever leak into the production analytics.
      */
-    public static final String MICRONAUT_VERSION = "4.0.0-TESTING";
+    private static final String MICRONAUT_VERSION = "4.0.0-TESTING";
     private static final Logger LOG = LoggerFactory.getLogger(DevDataLoader.class);
 
     private final ApplicationRepository applicationRepository;
