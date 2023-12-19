@@ -15,9 +15,12 @@
  */
 package io.micronaut.starter.analytics.postgres.daily;
 
+import io.micronaut.core.annotation.Nullable;
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.annotation.QueryValue;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
@@ -58,24 +61,25 @@ public class DailyController {
         this.dailyRepository = dailyRepository;
     }
 
+    @Produces(MediaType.TEXT_HTML)
     @Get
     @View("daily")
     HttpResponse<DailyBarChart> view(
-            @QueryValue("from") Optional<LocalDate> fromQuery,
-            @QueryValue("to") Optional<LocalDate> toQuery,
-            @QueryValue Optional<Integer> days
+            @Nullable @QueryValue("from") LocalDate fromQuery,
+            @Nullable @QueryValue("to") LocalDate toQuery,
+            @Nullable @QueryValue Integer days
     ) {
         return HttpResponse.ok(barChartFrom(api(fromQuery, toQuery, days)));
     }
 
     @Get("/counts")
     List<DailyDTO> api(
-            @QueryValue("from") Optional<LocalDate> fromQuery,
-            @QueryValue("to") Optional<LocalDate> toQuery,
-            @QueryValue Optional<Integer> days
+            @Nullable @QueryValue("from") LocalDate fromQuery,
+            @Nullable @QueryValue("to") LocalDate toQuery,
+            @Nullable @QueryValue Integer days
     ) {
-        LocalDate to = toQuery.orElse(LocalDate.now());
-        LocalDate from = fromQuery.orElse(to.minusDays(days.orElse(dailyConfiguration.getDays()) - 1));
+        LocalDate to = toQuery != null ? toQuery : LocalDate.now();
+        LocalDate from = fromQuery != null ? fromQuery : to.minusDays(days != null ? days : dailyConfiguration.getDays() - 1);
         if (from.isAfter(to)) {
             LOG.error("Requested from date is after to date: {} > {}", from, to);
             throw new IllegalArgumentException("from date is after to date");
