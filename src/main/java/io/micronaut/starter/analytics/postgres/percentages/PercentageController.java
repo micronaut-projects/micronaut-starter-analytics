@@ -17,8 +17,10 @@ package io.micronaut.starter.analytics.postgres.percentages;
 
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
@@ -71,6 +73,7 @@ class PercentageController {
         this.featureRepository = featureRepository;
     }
 
+    @Produces(MediaType.TEXT_HTML)
     @Get
     @View("percentages")
     Map<String, Object> index() {
