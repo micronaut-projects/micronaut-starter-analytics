@@ -25,15 +25,17 @@ import io.micronaut.http.annotation.Produces;
 import io.micronaut.http.uri.UriBuilder;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import io.micronaut.starter.analytics.Main;
 import io.swagger.v3.oas.annotations.Hidden;
 
 import java.net.URI;
 
+import static io.micronaut.starter.analytics.Main.API_TITLE;
+
 @Controller
 public class OpenApiController {
-
     private static final @NonNull URI URI_SWAGGER = UriBuilder.of("/swagger")
-            .path("micronaut-launch-analytics-1.0.yml")
+            .path(API_TITLE.toLowerCase().replaceAll(" ", "-") +"-" + Main.API_VERSION + ".yml")
             .build();
 
     @Hidden

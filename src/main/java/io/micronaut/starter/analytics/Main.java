@@ -27,16 +27,21 @@ import io.netty.util.internal.PlatformDependent;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
+
+import static io.micronaut.starter.analytics.Main.API_TITLE;
+import static io.micronaut.starter.analytics.Main.API_VERSION;
 
 @OpenAPIDefinition(
         info = @Info(
-                title = "Micronaut Launch Analytics",
-                version = "1.0",
+                title = API_TITLE,
+                version = API_VERSION,
                 contact = @Contact(url = "https://micronaut.io", email = "info@micronaut.io")
         )
 )
 public class Main {
+
+    public static final String API_VERSION = "1.0";
+    public static final String API_TITLE = "Micronaut Launch Analytics";
     @ContextConfigurer
     public static class Configurer implements ApplicationContextConfigurer {
         @Override
