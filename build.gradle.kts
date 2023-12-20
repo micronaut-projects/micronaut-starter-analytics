@@ -7,7 +7,7 @@ plugins {
 }
 
 version = "0.1"
-group = "io.micronaut.starter.analytics.postgres"
+group = "io.micronaut.starter.analytics"
 
 repositories {
     mavenCentral()
@@ -15,6 +15,10 @@ repositories {
 
 dependencies {
     implementation("io.micronaut.starter:micronaut-starter-core:${gradle.rootProject.extra["micronautVersion"]}")
+
+    // OpenAPI
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
 
     // GraalVM
     annotationProcessor("io.micronaut:micronaut-graal")
@@ -70,7 +74,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("io.micronaut.starter.analytics.postgres.Main")
+    mainClass.set("io.micronaut.starter.analytics.Main")
 }
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
@@ -83,9 +87,13 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("io.micronaut.starter.analytics.postgres.*")
+        annotations("io.micronaut.starter.analytics.*")
     }
 }
 tasks.named<DockerBuildImage>("dockerBuild") {
     images = setOf(System.getenv("IMAGE_NAME"))
+}
+tasks.withType<JavaCompile>().configureEach {
+    val compilerArgs = options.compilerArgs
+    compilerArgs.add("-parameters")
 }

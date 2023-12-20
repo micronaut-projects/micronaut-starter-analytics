@@ -17,9 +17,6 @@
                 <div th:replace="~{_piecharts :: piecharts(${charts.subList(1,charts.size())})}"></div>
             </div>
         </div>
-        <th:block th:if="${security}">
-            <div th:replace="~{_excel :: excel()}"></div>
-        </th:block>
     </main>
 </body>
 </html>

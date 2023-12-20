@@ -10,12 +10,12 @@
             <div class="row">
                 <div th:replace="~{_header :: header()}"></div>
                 <div class="col-md-8">
+                    <h2 th:if="${chart.name().code() != null}" th:text="${#strings.defaultString(#messages.msgOrNull(chart.name().code()),chart.name().defaultMessage())}"></h2>
+                    <h2 th:unless="${chart.name().code()}" th:text="${chart.name().defaultMessage()}"></h2>
                 </div>
             </div>
             <div class="row">
                 <div class="chart col-md-12">
-                    <h2 th:if="${chart.name().code() != null}"th:text="${#strings.defaultString(#messages.msgOrNull(chart.name().code()),chart.name().defaultMessage())}"></h2>
-                    <h2 th:unless="${chart.name().code()}" th:text="${chart.name().defaultMessage()}"></h2>
                     <div id="daily-chart"></div>
                 </div>
                 <script th:inline="javascript">
