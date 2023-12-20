@@ -1,12 +1,12 @@
-package io.micronaut.starter.analytics.security;
+package io.micronaut.starter.analytics.configuration;
 
 import io.micronaut.context.annotation.ConfigurationProperties;
 
 import java.util.Collections;
 import java.util.List;
 
-@ConfigurationProperties("micronaut.starter.analytics.github")
-class GithubAllowedConfiguration {
+@ConfigurationProperties(StarterAnalyticsConfiguration.PREFIX + ".github")
+public class GithubAllowedConfiguration {
 
     private List<String> allowedUsernames;
 

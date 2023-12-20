@@ -7,11 +7,11 @@ import io.micronaut.security.authentication.AuthenticationResponse;
 import io.micronaut.security.oauth2.endpoint.authorization.state.State;
 import io.micronaut.security.oauth2.endpoint.token.response.OauthAuthenticationMapper;
 import io.micronaut.security.oauth2.endpoint.token.response.TokenResponse;
+import io.micronaut.starter.analytics.configuration.GithubAllowedConfiguration;
 import jakarta.inject.Named;
 import jakarta.inject.Singleton;
 import org.reactivestreams.Publisher;
 
-import java.util.Collections;
 import reactor.core.publisher.Mono;
 
 @Named("github")

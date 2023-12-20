@@ -17,6 +17,7 @@ package io.micronaut.starter.analytics.security;
 
 import io.micronaut.context.annotation.Requires;
 import io.micronaut.core.annotation.NonNull;
+import io.micronaut.starter.analytics.configuration.ApiKeyConfiguration;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
