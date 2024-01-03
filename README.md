@@ -35,8 +35,26 @@ micronaut.security.token.jwt.signatures.secret.generator.secret=pleaseChangeThis
 micronaut.starter.analytics.github.allowed-usernames[0]=sdelamo
 micronaut.starter.analytics.github.allowed-usernames[1]=timyates
 ```
+> Update `micronaut.security.oauth2.clients.github.client-secret` and `micronaut.security.oauth2.clients.github.client-id` with the values obtained from the GitHub App.
+
+### Run and login
+
+Then, run the application via:
+
+```shell
+./gradlew run
+```
+
+and open http://localhost:8080 in a browser.
+
+To login, use the link in the top menu
+
+![](docs/login.png)
+
+(to log out again, navigate to http://localhost:8080/logout)
 
 ## Database Schema
+
 ![](docs/databaseschema.png)
 
 ## Distribution to Google Cloud Run via GitHub Actions
