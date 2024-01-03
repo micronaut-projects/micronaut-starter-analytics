@@ -23,7 +23,7 @@ class LoggingHeadersFilterTest extends LoggingHeadersFilter {
                 "forwarded:for", "\"107.178.207.38\";proto=https");
         HttpHeaders headers = new SimpleHttpHeaders(headersMap, null);
         LoggingHeadersFilterReplacement filter = new LoggingHeadersFilterReplacement();
-        filter.logHeaders(HttpMethod.GET, "/oauth/login/github", headers);
+        filter.logHeaders(headers);
         assertFalse(filter.headers.containsKey(HttpHeaders.AUTHORIZATION));
         assertFalse(filter.headers.containsKey("X-API-KEY"));
         assertFalse(filter.headers.containsKey("authorization"));

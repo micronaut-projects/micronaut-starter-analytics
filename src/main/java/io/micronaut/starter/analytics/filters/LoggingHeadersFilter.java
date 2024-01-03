@@ -44,25 +44,22 @@ class LoggingHeadersFilter implements HttpServerFilter {
     }
 
     private void logHeaders(@NonNull HttpRequest<?> request) {
-        logHeaders(request.getMethod(), request.getPath(), request.getHeaders());
+        LOG.trace("{} {} uri {}", request.getMethod(), request.getPath(), request.getUri().toString());
+        logHeaders(request.getHeaders());
     }
 
-    void logHeaders(@NonNull HttpMethod method,
-                    @NonNull String path,
-                    @NonNull HttpHeaders headers) {
+    void logHeaders(@NonNull HttpHeaders headers) {
         for (String headerName : headers.names()) {
             if (headerName.equalsIgnoreCase(HttpHeaders.AUTHORIZATION) || headerName.equalsIgnoreCase(ApiKeyTokenReader.X_API_TOKEN)) {
                 continue;
             }
-            log(method, path, headerName, headers.get(headerName));
+            log(headerName, headers.get(headerName));
         }
     }
 
-    protected void log(@NonNull HttpMethod method,
-                       @NonNull String path,
-                       @NonNull String headerName,
+    protected void log(@NonNull String headerName,
                        @Nullable String headerValue) {
-        LOG.trace("{} {} H {}:{}", method, path, headerName, headerValue);
+        LOG.trace("H {}:{}", headerName, headerValue);
     }
 
     @Override
