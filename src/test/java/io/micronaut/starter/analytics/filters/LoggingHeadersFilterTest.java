@@ -1,7 +1,6 @@
 package io.micronaut.starter.analytics.filters;
 
 import io.micronaut.http.HttpHeaders;
-import io.micronaut.http.HttpMethod;
 import io.micronaut.http.simple.SimpleHttpHeaders;
 import org.junit.jupiter.api.Test;
 
