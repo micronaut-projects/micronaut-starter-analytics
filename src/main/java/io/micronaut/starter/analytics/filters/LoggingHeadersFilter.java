@@ -37,7 +37,9 @@ class LoggingHeadersFilter implements HttpServerFilter {
     private static final Logger LOG = LoggerFactory.getLogger(LoggingHeadersFilter.class);
     @Override
     public Publisher<MutableHttpResponse<?>> doFilter(HttpRequest<?> request, ServerFilterChain chain) {
-        logHeaders(request);
+        if (LOG.isTraceEnabled()) {
+            logHeaders(request);
+        }
         return chain.proceed(request);
     }
 
