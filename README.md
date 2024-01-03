@@ -4,17 +4,58 @@ Starter analytics stores information about the applications that [Micronaut Laun
 
 Starter Analytics deploys a web application to [Google Cloud Run](https://cloud.google.com/run/). The application uses a [PostgreSQL](https://www.postgresql.org) database. It persists an application and its selected features.
 
-It exposes an endpoint that saves an application in the database. Micronaut Launch backend invokes that endpoint when a new application is generated. API Key authenticaion is used to secure the communication between both services.
+It exposes an endpoint that saves an application in the database. Micronaut Launch backend invokes that endpoint when a new application is generated. API Key authentication is used to secure the communication between both services.
+
+
+## Local Development
+
+### GitHub Application:
+
+- Register a [GitHub App](https://docs.github.com/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app)
+
+- Setup the callback as illustrated in the next image:
+
+![](docs/oauth-callback.png)
+
+Generate a Client and ID and Client Secret. 
+
+![](docs/oauth-clientid-clientsecret.png)
+
+### Local Development File
+
+Create a local development file: 
+
+`src/main/resources/application-dev.properties`
+
+```properties
+api.key=xxx
+micronaut.security.oauth2.clients.github.client-secret=ZZZZZZZZZZ
+micronaut.security.oauth2.clients.github.client-id=YYYYYY
+micronaut.security.token.jwt.signatures.secret.generator.secret=pleaseChangeThisSecretForANewOne
+micronaut.starter.analytics.github.allowed-usernames[0]=sdelamo
+micronaut.starter.analytics.github.allowed-usernames[1]=timyates
+```
+> Update `micronaut.security.oauth2.clients.github.client-secret` and `micronaut.security.oauth2.clients.github.client-id` with the values obtained from the GitHub App.
+
+### Run and login
+
+Then, run the application via:
+
+```shell
+./gradlew run
+```
+
+and open http://localhost:8080 in a browser.
+
+To login, use the link in the top menu
+
+![](docs/login.png)
+
+(to log out again, navigate to http://localhost:8080/logout)
 
 ## Database Schema
+
 ![](docs/databaseschema.png)
-
-## Export as Excel file
-It exposes an endpoint to download analytics as an Excel file:
-
-```
-curl "{api}/analytics/excel" -H 'Accept: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' -H 'X-API-KEY: {apikey}' --output starter-analytics.xlsx
-```
 
 ## Distribution to Google Cloud Run via GitHub Actions
 
@@ -128,13 +169,17 @@ Create two databases `grailsforge-production` and `grailsforge-snapshot`
 
 ## Cloud Run environment variables
 
-| Name                           | Value                                          | 
-|:-------------------------------|:-----------------------------------------------|
-| `MICRONAUT_ENV_DEDUCTION`      | `false`                                        |
-| `MICRONAUT_ENVIRONMENTS`       | `gcp`                                          |
-| `API_KEY`                      | `Allowed API Key`                              |
-| `CLOUD_SQL_CONNECTION_NAME`    | `GC_PROJECT_ID:REGION:CLOUD_SQL_INSTANCE_NAME` |
-| `DATASOURCES_DEFAULT_PASSWORD` | Database password                              | 
-| `DATASOURCES_DEFAULT_USERNAME` | Database username                              |
-| `DB_NAME`                      | Database name                                  |
-| `DATASOURCES_DEFAULT_URL`      | Database JDBC URL                              |
+| Name                                                              | Value                                          | 
+|:------------------------------------------------------------------|:-----------------------------------------------|
+| `MICRONAUT_ENV_DEDUCTION`                                         | `false`                                        |
+| `MICRONAUT_ENVIRONMENTS`                                          | `gcp`                                          |
+| `API_KEY`                                                         | `Allowed API Key`                              |
+| `CLOUD_SQL_CONNECTION_NAME`                                       | `GC_PROJECT_ID:REGION:CLOUD_SQL_INSTANCE_NAME` |
+| `DATASOURCES_DEFAULT_PASSWORD`                                    | Database password                              | 
+| `DATASOURCES_DEFAULT_USERNAME`                                    | Database username                              |
+| `DB_NAME`                                                         | Database name                                  |
+| `DATASOURCES_DEFAULT_URL`                                         | Database JDBC URL                              |
+| `MICRONAUT_SECURITY_OAUTH2_CLIENTS_GITHUB_CLIENT_SECRET`          | Obtained from GitHub                           |                                               | 
+| `MICRONAUT_SECURITY_OAUTH2_CLIENTS_GITHUB_CLIENT_ID`              | Obtained from GitHub                           |   
+| `MICRONAUT_SECURITY_TOKEN_JWT_SIGNATURES_SECRET_GENERATOR_SECRET` | Secret to sign JWT                             |
+| `MICRONAUT_STARTER_ANALYTICS_GITHUB_ALLOWED_USERNAMES`            | Comma sepated list of users                    | 

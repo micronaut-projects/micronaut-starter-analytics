@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{layoutFile :: layout(~{::title}, ~{::script}, ~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{analytics.percentages.title}"></title>
+    <script th:replace="~{_googlecharts :: googlecharts()}"></script>
+</head>
+<body>
+    <main id="main">
+        <div class="container">
+            <div class="row">
+                <div th:replace="~{_header :: header()}"></div>
+                <div class="col-md-8">
+                    <h2 th:if="${chart.name().code() != null}" th:text="${#strings.defaultString(#messages.msgOrNull(chart.name().code()),chart.name().defaultMessage())}"></h2>
+                    <h2 th:unless="${chart.name().code()}" th:text="${chart.name().defaultMessage()}"></h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="chart col-md-12">
+                    <div id="daily-chart"></div>
+                </div>
+                <script th:inline="javascript">
+                    // Set a callback to run when the Google Visualization API is loaded.
+                    google.charts.setOnLoadCallback(() => {
+                        const data = new google.visualization.DataTable();
+                        data.addColumn('date', 'date');
+                        data.addColumn('number', [[${#strings.defaultString(#messages.msgOrNull('daily.count.label'),'count')}]]);
+                        /*[# th:each="day : ${chart.days()}"]*/
+                        data.addRow([ new Date( [[${day.date}]] ), [[${day.count}]] ]);
+                        /*[/]*/
+                        const chart = new google.visualization.ColumnChart(document.getElementById('daily-chart'));
+                        chart.draw(data, {
+                            height: 600,
+                            fontName: 'Fira Sans',
+                            chartArea:{ width: '95%', height:'75%'},
+                            legend: { position: 'top' },
+                            haxis: { title: [[${#strings.defaultString(#messages.msgOrNull('daily.date.label'),'count')}]] },
+                            vaxis: { format: 'short' },
+                            colors: [ '#0a62d1' ],
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
