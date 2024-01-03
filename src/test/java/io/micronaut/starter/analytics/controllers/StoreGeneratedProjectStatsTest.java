@@ -11,10 +11,10 @@ import io.micronaut.http.annotation.Header;
 import io.micronaut.http.annotation.Post;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.http.client.exceptions.HttpClientResponseException;
-import io.micronaut.starter.analytics.repositories.AbstractDataTest;
 import io.micronaut.starter.analytics.Generated;
 import io.micronaut.starter.analytics.SelectedFeature;
 import io.micronaut.starter.analytics.entities.Application;
+import io.micronaut.starter.analytics.repositories.AbstractDataTest;
 import io.micronaut.starter.analytics.services.TotalDTO;
 import io.micronaut.starter.application.ApplicationType;
 import io.micronaut.starter.options.BuildTool;
@@ -31,7 +31,12 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "spec.name", value = "StoreGeneratedProjectStatsSpec")
 @Property(name = "api.key", value = "wonderful")
@@ -42,7 +47,7 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
     @Inject AnalyticsClient client;
 
     @Test
-    void testSaveGenerationDataWithoutApiKey() throws ExecutionException, InterruptedException {
+    void testSaveGenerationDataWithoutApiKey() {
         Generated generated = new Generated(
                 ApplicationType.FUNCTION,
                 Language.KOTLIN,
@@ -53,13 +58,13 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
         generated.setSelectedFeatures(List.of(new SelectedFeature("google-cloud-function")));
 
         ExecutionException thrown = assertThrows(ExecutionException.class, () -> unauthorizedClient.applicationGenerated(generated).get());
-        assertTrue(thrown.getCause() instanceof HttpClientResponseException);
+        assertInstanceOf(HttpClientResponseException.class, thrown.getCause());
         HttpClientResponseException ex = (HttpClientResponseException) thrown.getCause();
         assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatus());
     }
 
     @Test
-    void testSaveGenerationDataWithAWrongApiKey() throws ExecutionException, InterruptedException {
+    void testSaveGenerationDataWithAWrongApiKey() {
         Generated generated = new Generated(
                 ApplicationType.FUNCTION,
                 Language.KOTLIN,
@@ -71,7 +76,7 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
         Executable e = () -> wrongApiKeyClient.applicationGenerated(generated).get();
 
         ExecutionException thrown = assertThrows(ExecutionException.class, e);
-        assertTrue(thrown.getCause() instanceof HttpClientResponseException);
+        assertInstanceOf(HttpClientResponseException.class, thrown.getCause());
         HttpClientResponseException ex = (HttpClientResponseException) thrown.getCause();
         assertEquals(HttpStatus.UNAUTHORIZED, ex.getStatus());
     }
@@ -120,6 +125,7 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
     @Client(AnalyticsController.PATH)
     @Header(name = "X-API-KEY", value = "wonderful")
     interface AnalyticsClient {
+
         @Post("/report")
         CompletableFuture<HttpStatus> applicationGenerated(@NonNull @Body Generated generated);
     }
@@ -127,6 +133,7 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
     @Requires(property = "spec.name", value = "StoreGeneratedProjectStatsSpec")
     @Client(AnalyticsController.PATH)
     interface UnauthorizedAnalyticsClient {
+
         @Post("/report")
         CompletableFuture<HttpStatus> applicationGenerated(@NonNull @Body Generated generated);
     }
@@ -135,6 +142,7 @@ class StoreGeneratedProjectStatsTest extends AbstractDataTest {
     @Client(AnalyticsController.PATH)
     @Header(name = "X-API-KEY", value = "WRONG!")
     interface WrongApiKeyClient {
+
         @Post("/report")
         CompletableFuture<HttpStatus> applicationGenerated(@NonNull @Body Generated generated);
     }

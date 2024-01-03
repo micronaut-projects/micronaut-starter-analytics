@@ -9,8 +9,10 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "micronaut.starter.analytics.github.allowed-usernames[0]", value = "sdelamo")
 @MicronautTest(startApplication = false)
@@ -22,7 +24,7 @@ class GithubAuthenticationMapperTest {
     @Test
     void authenticationResponse() {
         OauthAuthenticationMapper oauthAuthenticationMapper = beanContext.getBean(OauthAuthenticationMapper.class, Qualifiers.byName("github"));
-        assertTrue(oauthAuthenticationMapper instanceof GithubAuthenticationMapper);
+        assertInstanceOf(GithubAuthenticationMapper.class, oauthAuthenticationMapper);
         GithubAuthenticationMapper githubAuthenticationMapper = (GithubAuthenticationMapper) oauthAuthenticationMapper;
         assertNotNull(githubAuthenticationMapper);
         TokenResponse tokenResponse = new TokenResponse();

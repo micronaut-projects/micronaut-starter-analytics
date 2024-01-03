@@ -88,7 +88,7 @@ class GenerateExcelTest extends AbstractDataTest {
     @Requires(property = "spec.name", value = "GenerateExcelSpec")
     @Client("/analytics")
     @Header(name = "X-API-KEY", value = "wonderful")
-    static interface AnalyticsClient {
+    interface AnalyticsClient {
 
         @Get("/excel")
         @Consumes(MediaType.MICROSOFT_EXCEL_OPEN_XML)

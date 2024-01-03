@@ -7,13 +7,18 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
-import io.micronaut.http.*;
+import io.micronaut.http.HttpHeaders;
+import io.micronaut.http.HttpRequest;
+import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.MediaType;
+import io.micronaut.http.MutableHttpRequest;
 import io.micronaut.http.client.BlockingHttpClient;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
 import io.micronaut.json.JsonMapper;
-import io.micronaut.starter.analytics.repositories.AbstractDataTest;
 import io.micronaut.starter.analytics.entities.Application;
+import io.micronaut.starter.analytics.repositories.AbstractDataTest;
 import io.micronaut.starter.analytics.repositories.ApplicationRepository;
 import io.micronaut.starter.analytics.services.DailyDTO;
 import io.micronaut.starter.analytics.services.DailyService;
@@ -33,7 +38,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Property(name = "micronaut.security.reject-not-found", value = StringUtils.FALSE)
@@ -68,9 +72,10 @@ class DailyControllerTest extends AbstractDataTest {
         BlockingHttpClient client = httpClient.toBlocking();
         String html = assertDoesNotThrow(() -> client.retrieve(createHtmlRequest("/analytics/daily")));
         assertTrue(html.contains("Number of applications generated in Micronaut Launch"));
-        Stream.iterate(0, i -> i + 1).limit(30).map(i -> LocalDate.now().minusDays(i)).forEach(date -> {
-            assertTrue(html.contains(date.toString()));
-        });
+        Stream.iterate(0, i -> i + 1)
+                .limit(30)
+                .map(i -> LocalDate.now().minusDays(i))
+                .forEach(date -> assertTrue(html.contains(date.toString())));
     }
 
     @Test
@@ -78,9 +83,10 @@ class DailyControllerTest extends AbstractDataTest {
         BlockingHttpClient client = httpClient.toBlocking();
         String html = assertDoesNotThrow(() -> client.retrieve(createHtmlRequest("/analytics/daily")));
         assertTrue(html.contains("Number of applications generated in Micronaut Launch"));
-        Stream.iterate(0, i -> i + 1).limit(30).map(i -> LocalDate.now().minusDays(i)).forEach(date -> {
-            assertTrue(html.contains(date.toString()));
-        });
+        Stream.iterate(0, i -> i + 1)
+                .limit(30)
+                .map(i -> LocalDate.now().minusDays(i))
+                .forEach(date -> assertTrue(html.contains(date.toString())));
     }
 
     @Test
