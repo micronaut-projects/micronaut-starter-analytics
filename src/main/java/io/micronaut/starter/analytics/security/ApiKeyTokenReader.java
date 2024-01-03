@@ -33,7 +33,7 @@ public class ApiKeyTokenReader extends HttpHeaderTokenReader {
 
     private static final Logger LOG = LoggerFactory.getLogger(ApiKeyTokenReader.class);
 
-    private static final String X_API_TOKEN = "X-API-KEY";
+    public static final String X_API_TOKEN = "X-API-KEY";
 
 
     @Override
