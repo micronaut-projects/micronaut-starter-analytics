@@ -16,7 +16,6 @@
 package io.micronaut.starter.analytics.controllers;
 
 import io.micronaut.core.annotation.Nullable;
-import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
@@ -28,7 +27,6 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.starter.analytics.services.DailyService;
 import io.micronaut.views.ModelAndView;
-import io.micronaut.views.View;
 import io.micronaut.views.fields.messages.Message;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.constraints.Past;
