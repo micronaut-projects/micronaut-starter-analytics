@@ -5,6 +5,7 @@ import io.micronaut.core.util.StringUtils;
 import io.micronaut.starter.analytics.repositories.FeatureRepository;
 import io.micronaut.starter.analytics.services.TotalDTO;
 import io.micronaut.starter.analytics.services.charts.Row;
+import io.micronaut.starter.options.Language;
 import io.micronaut.views.fields.messages.Message;
 import jakarta.inject.Singleton;
 import jakarta.validation.constraints.NotNull;
@@ -42,6 +43,11 @@ public class PercentageService {
     }
 
     @NonNull
+    public List<Row> buildToolPieChart(@NonNull @NotNull @Past LocalDate from, @NonNull @NotNull Language language) {
+        return pieChartRows(buildTool(from, language));
+    }
+
+    @NonNull
     public List<Row> gradleDslPieChart(@NonNull @NotNull @Past LocalDate from) {
         return pieChartRows(gradleDsl(from));
     }
@@ -63,6 +69,10 @@ public class PercentageService {
 
     public PercentageResponse buildTool(@NonNull @NotNull @Past LocalDate from) {
         return toPercentage(() -> featureRepository.topBuildTools(from), KEEP_ALL, MAP_ALL_GRADLE_TYPES_TO_GRADLE);
+    }
+
+    public PercentageResponse buildTool(@NonNull @NotNull @Past LocalDate from, @NonNull @NotNull Language language) {
+        return toPercentage(() -> featureRepository.topBuildTools(from, language), KEEP_ALL, MAP_ALL_GRADLE_TYPES_TO_GRADLE);
     }
 
     public PercentageResponse gradleDsl(@NonNull @NotNull @Past LocalDate from) {
