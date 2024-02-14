@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2023 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import io.micronaut.security.rules.SecurityRule;
 import io.micronaut.starter.analytics.configuration.StarterAnalyticsConfiguration;
 import io.micronaut.starter.analytics.services.charts.PieChart;
 import io.micronaut.starter.analytics.services.percentages.PercentageService;
+import io.micronaut.starter.options.Language;
 import io.micronaut.views.View;
 import io.micronaut.views.fields.messages.Message;
 import io.swagger.v3.oas.annotations.Hidden;
@@ -37,17 +38,27 @@ import java.util.Map;
 
 @Controller
 class PercentageController {
+
     private static final String ID_BUILD_TOOL = "buildTool";
+    private static final String ID_BUILD_TOOL_JAVA = "javaBuildTool";
+    private static final String ID_BUILD_TOOL_GROOVY = "groovyBuildTool";
+    private static final String ID_BUILD_TOOL_KOTLIN = "kotlinBuildTool";
     private static final String ID_GRADLE_DSL = "gradleDsl";
     private static final String ID_JDK = "jdk";
     private static final String ID_LANGUAGE = "language";
     private static final String ID_TEST_FRAMEWORK = "testFramework";
+
     private static final Message MESSAGE_PERCENTAGE_BUILD_TOOLS = Message.of("Build tools", "percentage.buildtool");
+    private static final Message MESSAGE_PERCENTAGE_JAVA_BUILD_TOOLS = Message.of("Java build tools", "percentage.buildtool.java");
+    private static final Message MESSAGE_PERCENTAGE_GROOVY_BUILD_TOOLS = Message.of("Groovy build tools", "percentage.buildtool.groovy");
+    private static final Message MESSAGE_PERCENTAGE_KOTLIN_BUILD_TOOLS = Message.of("Kotlin build tools", "percentage.buildtool.kotlin");
     private static final Message MESSAGE_PERCENTAGE_GRADLE_DSLS = Message.of("Gradle DSLs", "percentage.gradledsl");
     private static final Message MESSAGE_PERCENTAGE_JAVA_VERSIONS = Message.of("Java versions", "percentage.javaversions");
     private static final Message MESSAGE_PERCENTAGE_LANGUAGES = Message.of("Languages", "percentage.languages");
     private static final Message MESSAGE_PERCENTAGE_TEST_FRAMEWORKS = Message.of("Test frameworks", "percentage.testframeworks");
+
     private static final String MODEL_METRICS = "charts";
+
     private final PercentageService percentageService;
     private final StarterAnalyticsConfiguration starterAnalyticsConfiguration;
 
@@ -67,6 +78,9 @@ class PercentageController {
         LocalDate from = sinceDate();
         return Collections.singletonMap(MODEL_METRICS, List.of(
                 new PieChart(ID_BUILD_TOOL, MESSAGE_PERCENTAGE_BUILD_TOOLS, percentageService.buildToolPieChart(from)),
+                new PieChart(ID_BUILD_TOOL_JAVA, MESSAGE_PERCENTAGE_JAVA_BUILD_TOOLS, percentageService.buildToolPieChart(from, Language.JAVA)),
+                new PieChart(ID_BUILD_TOOL_GROOVY, MESSAGE_PERCENTAGE_GROOVY_BUILD_TOOLS, percentageService.buildToolPieChart(from, Language.GROOVY)),
+                new PieChart(ID_BUILD_TOOL_KOTLIN, MESSAGE_PERCENTAGE_KOTLIN_BUILD_TOOLS, percentageService.buildToolPieChart(from, Language.KOTLIN)),
                 new PieChart(ID_GRADLE_DSL, MESSAGE_PERCENTAGE_GRADLE_DSLS, percentageService.gradleDslPieChart(from)),
                 new PieChart(ID_JDK, MESSAGE_PERCENTAGE_JAVA_VERSIONS, percentageService.jdksPieChart(from)),
                 new PieChart(ID_LANGUAGE, MESSAGE_PERCENTAGE_LANGUAGES, percentageService.languagesPieChart(from)),

@@ -3,10 +3,10 @@ package io.micronaut.starter.analytics.views;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.io.Writable;
 import io.micronaut.core.util.StringUtils;
-import io.micronaut.starter.analytics.utils.WritableUtils;
+import io.micronaut.starter.analytics.services.charts.PieChart;
 import io.micronaut.starter.analytics.services.charts.Row;
 import io.micronaut.starter.analytics.services.percentages.PercentageDTO;
-import io.micronaut.starter.analytics.services.charts.PieChart;
+import io.micronaut.starter.analytics.utils.WritableUtils;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import io.micronaut.views.ViewsRenderer;
 import io.micronaut.views.fields.messages.Message;
@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @MicronautTest(startApplication = false)
 class PieChartFragmentTest {

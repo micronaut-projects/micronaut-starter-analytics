@@ -13,8 +13,10 @@ repositories {
     mavenCentral()
 }
 
+val micronautVersion: String by extra
+
 dependencies {
-    implementation("io.micronaut.starter:micronaut-starter-core:${gradle.rootProject.extra["micronautVersion"]}")
+    implementation("io.micronaut.starter:micronaut-starter-core:${micronautVersion}")
 
     // OpenAPI
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017-2023 original authors
+ * Copyright 2017-2024 original authors
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ public class DevDataLoader implements ApplicationEventListener<ApplicationStartu
             applicationRepository.saveAll(List.of(
                     new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.JUNIT, JdkVersion.JDK_17, MICRONAUT_VERSION),
                     new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_21, MICRONAUT_VERSION),
+                    new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.MAVEN, TestFramework.SPOCK, JdkVersion.JDK_21, MICRONAUT_VERSION),
                     new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_17, MICRONAUT_VERSION),
                     new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, MICRONAUT_VERSION)
             ));

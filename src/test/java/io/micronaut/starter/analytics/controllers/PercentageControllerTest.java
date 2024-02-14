@@ -66,10 +66,13 @@ class PercentageControllerTest extends AbstractDataTest {
         seedData();
         LocalDate from = LocalDate.now().minusDays(30);
         assertPercentage("jdks", percentageService.jdks(from), Map.entry("JDK_21", 0.25d), Map.entry("JDK_17", 0.75d));
-        assertPercentage("gradleDsl", percentageService.gradleDsl(from), Map.entry("kotlin", 0.66d), Map.entry("groovy", 0.33d));
-        assertPercentage("buildTool", percentageService.buildTool(from), Map.entry("gradle", 0.75d), Map.entry("maven", 0.25d));
-        assertPercentage("languages", percentageService.languages(from), Map.entry("java", 0.5d), Map.entry("groovy", 0.25d), Map.entry("kotlin", 0.25d));
-        assertPercentage("test frameworks", percentageService.testFrameworks(from), Map.entry("spock", 0.5d), Map.entry("junit", 0.25d), Map.entry("kotest", 0.25d));
+        assertPercentage("gradleDsl", percentageService.gradleDsl(from), Map.entry("kotlin", 0.6d), Map.entry("groovy", 0.4d));
+        assertPercentage("buildTool", percentageService.buildTool(from), Map.entry("gradle", 0.625d), Map.entry("maven", 0.375d));
+        assertPercentage("buildToolJava", percentageService.buildTool(from, Language.JAVA), Map.entry("gradle", 0.66d), Map.entry("maven", 0.33d));
+        assertPercentage("buildToolGroovy", percentageService.buildTool(from, Language.GROOVY), Map.entry("gradle", 0.5d), Map.entry("maven", 0.5d));
+        assertPercentage("buildToolKotlin", percentageService.buildTool(from, Language.KOTLIN), Map.entry("gradle", 0.66d), Map.entry("maven", 0.33d));
+        assertPercentage("languages", percentageService.languages(from), Map.entry("java", 0.375d), Map.entry("groovy", 0.25d), Map.entry("kotlin", 0.375d));
+        assertPercentage("test frameworks", percentageService.testFrameworks(from), Map.entry("spock", 0.5d), Map.entry("junit", 0.125d), Map.entry("kotest", 0.375d));
     }
 
     @SafeVarargs
@@ -101,8 +104,12 @@ class PercentageControllerTest extends AbstractDataTest {
             applicationRepository.saveAll(List.of(
                     new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE, TestFramework.JUNIT, JdkVersion.JDK_17, "4.0.1"),
                     new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_21, "4.0.1"),
+                    new Application(ApplicationType.DEFAULT, Language.JAVA, BuildTool.MAVEN, TestFramework.SPOCK, JdkVersion.JDK_21, "4.0.1"),
                     new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.GRADLE_KOTLIN, TestFramework.SPOCK, JdkVersion.JDK_17, "4.0.1"),
-                    new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1")
+                    new Application(ApplicationType.FUNCTION, Language.GROOVY, BuildTool.MAVEN, TestFramework.SPOCK, JdkVersion.JDK_17, "4.0.1"),
+                    new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.MAVEN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1"),
+                    new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.GRADLE, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1"),
+                    new Application(ApplicationType.FUNCTION, Language.KOTLIN, BuildTool.GRADLE_KOTLIN, TestFramework.KOTEST, JdkVersion.JDK_17, "4.0.1")
             ));
         }
     }
